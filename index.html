@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<title>Ελλάδα — Greece Road Trip March 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous"/>
+<style>
+  :root {
+    --bone: #f5f0e8;
+    --sand: #e8dcc8;
+    --terracotta: #c4622d;
+    --olive: #6b7c4b;
+    --aegean: #1a4a6b;
+    --aegean-light: #2a6a9b;
+    --marble: #f8f5f0;
+    --ink: #1a1510;
+    --gold: #c9a84c;
+    --mist: #8a9aa8;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bone); color:var(--ink); font-family:'Jost',sans-serif; font-weight:300; overflow-x:hidden; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height:100vh; background:var(--aegean);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(196,98,45,.1) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-columns { position:absolute; bottom:0; left:0; right:0; height:180px; display:flex; align-items:flex-end; justify-content:center; opacity:.07; }
+  .col-piece { width:2px; background:var(--gold); margin:0 30px; }
+  .hero-content { text-align:center; z-index:1; padding:2rem; }
+  .hero-eyebrow { font-weight:400; letter-spacing:.4em; font-size:.7rem; color:var(--gold); text-transform:uppercase; margin-bottom:1.5rem; opacity:0; animation:fadeUp .8s ease forwards .2s; }
+  .hero-title { font-family:'Cinzel',serif; font-size:clamp(3rem,8vw,7rem); font-weight:400; color:var(--marble); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; opacity:0; animation:fadeUp .8s ease forwards .4s; }
+  .hero-subtitle { font-family:'Cormorant Garamond',serif; font-size:clamp(1.2rem,3vw,2rem); font-style:italic; color:rgba(248,245,240,.6); margin-bottom:2rem; opacity:0; animation:fadeUp .8s ease forwards .6s; }
+  .hero-dates { font-weight:400; letter-spacing:.3em; font-size:.75rem; color:var(--gold); text-transform:uppercase; opacity:0; animation:fadeUp .8s ease forwards .8s; }
+  .hero-route { position:absolute; bottom:2rem; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:.5rem; opacity:0; animation:fadeUp .8s ease forwards 1s; flex-wrap:wrap; padding:0 1rem; }
+  .hero-route span { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(248,245,240,.4); }
+  .hero-route .dot { width:3px; height:3px; border-radius:50%; background:var(--gold); opacity:.5; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── NAV ── */
+  nav { position:sticky; top:0; background:rgba(20,16,10,.97); backdrop-filter:blur(10px); z-index:1000; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; height:56px; border-bottom:1px solid rgba(201,168,76,.2); }
+  .nav-logo { font-family:'Cinzel',serif; font-size:.85rem; letter-spacing:.15em; color:var(--gold); }
+  .nav-links { display:flex; gap:1.5rem; list-style:none; }
+  .nav-links a { font-size:.6rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(248,245,240,.45); text-decoration:none; transition:color .3s; }
+  .nav-links a:hover { color:var(--gold); }
+
+  /* ── BUDGET STRIP ── */
+  .budget-strip { background:var(--terracotta); padding:1.25rem 2rem; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:1.5rem 3rem; }
+  .budget-item { text-align:center; }
+  .budget-label { font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.6); display:block; margin-bottom:.2rem; }
+  .budget-value { font-family:'Cinzel',serif; font-size:1.2rem; color:white; }
+
+  /* ── SECTION SHARED ── */
+  section { padding:5rem 0; }
+  .section-header { text-align:center; margin-bottom:3.5rem; padding:0 2rem; }
+  .section-tag { font-size:.62rem; letter-spacing:.4em; text-transform:uppercase; color:var(--terracotta); display:block; margin-bottom:.75rem; }
+  .section-title { font-family:'Cinzel',serif; font-size:clamp(1.6rem,4vw,2.8rem); font-weight:400; color:var(--aegean); line-height:1.1; }
+  .section-divider { width:50px; height:1px; background:var(--gold); margin:1.25rem auto 0; opacity:.6; }
+
+  /* ── MAP ── */
+  #map-section { background:var(--aegean); }
+  #map-section .section-title { color:var(--marble); }
+  #map-section .section-tag { color:var(--gold); }
+  #map-section .section-divider { opacity:.4; }
+  #map-section p.map-note { color:rgba(248,245,240,.45); font-size:.75rem; text-align:center; margin-top:1rem; letter-spacing:.1em; }
+  #routeMap { height:520px; max-width:1100px; margin:0 auto; display:block; border:1px solid rgba(201,168,76,.2); }
+  .map-wrap { padding:0 2rem; }
+  .leaflet-popup-content-wrapper { background:var(--ink); border:1px solid rgba(201,168,76,.3); border-radius:0; box-shadow:0 8px 30px rgba(0,0,0,.4); }
+  .leaflet-popup-content { color:var(--marble); font-family:'Jost',sans-serif; font-size:.8rem; line-height:1.6; }
+  .leaflet-popup-content strong { font-family:'Cinzel',serif; font-size:.85rem; color:var(--gold); display:block; margin-bottom:.25rem; }
+  .leaflet-popup-tip { background:var(--ink); }
+  .leaflet-popup-close-button { color:var(--gold) !important; }
+  .map-legend { max-width:1100px; margin:1rem auto 0; padding:0 2rem; display:flex; flex-wrap:wrap; gap:.75rem; }
+  .legend-item { display:flex; align-items:center; gap:.5rem; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(248,245,240,.5); }
+  .legend-dot { width:10px; height:10px; border-radius:50%; }
+
+  /* ── WEATHER ── */
+  #weather { background:var(--marble); }
+  .weather-grid { max-width:1100px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.25rem; }
+  .weather-card { background:white; border:1px solid rgba(201,168,76,.15); padding:1.5rem; text-align:center; transition:transform .3s,box-shadow .3s; }
+  .weather-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(26,74,107,.1); }
+  .weather-city { font-family:'Cinzel',serif; font-size:.85rem; color:var(--aegean); letter-spacing:.08em; margin-bottom:.25rem; }
+  .weather-dates { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mist); margin-bottom:1rem; }
+  .weather-icon { font-size:2.2rem; margin-bottom:.5rem; display:block; }
+  .weather-temp { font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--ink); margin-bottom:.25rem; }
+  .weather-desc { font-size:.72rem; letter-spacing:.1em; color:var(--mist); text-transform:uppercase; margin-bottom:.75rem; }
+  .weather-details { display:flex; justify-content:center; gap:1rem; }
+  .weather-detail { font-size:.65rem; color:#888; text-align:center; }
+  .weather-detail span { display:block; font-size:.55rem; letter-spacing:.15em; text-transform:uppercase; color:var(--mist); margin-bottom:.2rem; }
+  .weather-note { max-width:1100px; margin:1.5rem auto 0; padding:0 2rem; text-align:center; font-size:.72rem; color:var(--mist); font-style:italic; }
+
+  /* ── WEATHER LOADING ── */
+  .weather-loading { grid-column:1/-1; display:flex; align-items:center; justify-content:center; gap:1rem; padding:3rem; color:var(--mist); font-size:.8rem; letter-spacing:.1em; }
+
+  /* ── ITINERARY ── */
+  #itinerary { background:white; }
+  .timeline { max-width:1100px; margin:0 auto; padding:0 2rem; position:relative; }
+  .timeline::before { content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,transparent,var(--gold) 5%,var(--gold) 95%,transparent); opacity:.25; transform:translateX(-50%); }
+  .day-card { display:grid; grid-template-columns:1fr 60px 1fr; margin-bottom:1.5rem; align-items:start; }
+  .day-card:nth-child(even) .day-content { grid-column:3; }
+  .day-card:nth-child(even) .day-spacer { grid-column:2; }
+  .day-card:nth-child(even) .day-meta { grid-column:1; text-align:right; }
+
+  /* clickable card */
+  .day-content {
+    background:var(--marble); border:1px solid rgba(201,168,76,.15); padding:1.5rem;
+    cursor:pointer;
+    transition:transform .3s,box-shadow .3s,border-color .3s;
+    position:relative; overflow:hidden;
+  }
+  .day-content::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(201,168,76,.04),transparent);
+    opacity:0; transition:opacity .3s;
+  }
+  .day-content:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(26,74,107,.13); border-color:rgba(201,168,76,.35); }
+  .day-content:hover::after { opacity:1; }
+  .day-content.open { border-color:rgba(201,168,76,.5); box-shadow:0 8px 32px rgba(26,74,107,.12); }
+
+  .day-header { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+  .day-header-left { flex:1; }
+  .day-chevron { font-size:.8rem; color:var(--gold); transition:transform .35s; margin-top:.2rem; flex-shrink:0; opacity:.7; }
+  .day-content.open .day-chevron { transform:rotate(180deg); }
+
+  .day-number { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.3em; color:var(--terracotta); text-transform:uppercase; margin-bottom:.2rem; }
+  .day-title { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:600; color:var(--aegean); line-height:1.2; margin-bottom:.5rem; }
+
+  /* collapsed preview */
+  .day-preview { font-size:.75rem; color:var(--mist); font-style:italic; line-height:1.5; }
+  .day-content.open .day-preview { display:none; }
+
+  /* expanded body */
+  .day-body { display:none; margin-top:1rem; }
+  .day-content.open .day-body { display:block; animation:expandIn .3s ease; }
+  @keyframes expandIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+
+  .day-desc { font-size:.8rem; line-height:1.8; color:#555; margin-bottom:.9rem; }
+
+  /* highlights list inside expanded */
+  .day-highlights { list-style:none; margin-bottom:.9rem; }
+  .day-highlights li { font-size:.78rem; color:#555; line-height:1.7; padding-left:1rem; position:relative; }
+  .day-highlights li::before { content:'→'; position:absolute; left:0; color:var(--gold); font-size:.65rem; top:.1rem; }
+
+  .day-tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+  .tag { font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; padding:.22rem .55rem; font-weight:500; }
+  .tag-transport { background:rgba(26,74,107,.08); color:var(--aegean); }
+  .tag-hotel { background:rgba(201,168,76,.12); color:#7a6020; }
+  .tag-activity { background:rgba(107,124,75,.1); color:var(--olive); }
+
+  .day-node { display:flex; flex-direction:column; align-items:center; padding-top:1.5rem; position:relative; z-index:1; }
+  .day-dot { width:11px; height:11px; border-radius:50%; background:var(--gold); border:2px solid white; box-shadow:0 0 0 2px var(--gold); transition:transform .3s; }
+  .day-card:has(.day-content.open) .day-dot { transform:scale(1.4); }
+  .day-date { font-size:.58rem; letter-spacing:.12em; color:var(--mist); text-transform:uppercase; margin-top:.4rem; text-align:center; white-space:nowrap; }
+  .day-meta { display:flex; flex-direction:column; justify-content:flex-start; padding-top:1.5rem; padding-left:1.5rem; }
+  .day-card:nth-child(even) .day-meta { padding-left:0; padding-right:1.5rem; }
+  .transport-icon { font-size:1.2rem; }
+
+  /* ── PHOTO GALLERY ── */
+  #gallery { background:var(--ink); }
+  #gallery .section-title { color:var(--marble); }
+  #gallery .section-tag { color:var(--gold); }
+  #gallery .section-divider { opacity:.3; }
+  .gallery-intro { text-align:center; color:rgba(248,245,240,.4); font-size:.78rem; margin-top:.75rem; font-style:italic; font-family:'Cormorant Garamond',serif; }
+  .gallery-tabs { display:flex; justify-content:center; flex-wrap:wrap; gap:.5rem; margin-bottom:2.5rem; padding:0 2rem; }
+  .gallery-tab { font-size:.6rem; letter-spacing:.25em; text-transform:uppercase; padding:.4rem 1rem; border:1px solid rgba(201,168,76,.25); color:rgba(248,245,240,.4); background:transparent; cursor:pointer; transition:all .3s; }
+  .gallery-tab.active,.gallery-tab:hover { border-color:var(--gold); color:var(--gold); background:rgba(201,168,76,.08); }
+  .gallery-grid { max-width:1200px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+  .gallery-item { position:relative; overflow:hidden; aspect-ratio:4/3; cursor:pointer; background:rgba(255,255,255,.04); border:1px solid rgba(201,168,76,.1); }
+  .gallery-item img { width:100%; height:100%; object-fit:cover; transition:transform .5s; display:block; }
+  .gallery-item:hover img { transform:scale(1.05); }
+  .gallery-item-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(20,16,10,.85) 0%,transparent 50%); opacity:0; transition:opacity .3s; display:flex; flex-direction:column; justify-content:flex-end; padding:1rem; }
+  .gallery-item:hover .gallery-item-overlay { opacity:1; }
+  .gallery-item-title { font-family:'Cinzel',serif; font-size:.8rem; color:var(--gold); margin-bottom:.2rem; }
+  .gallery-item-sub { font-size:.65rem; color:rgba(248,245,240,.6); letter-spacing:.1em; }
+  .gallery-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem; height:100%; padding:1.5rem; text-align:center; }
+  .gallery-placeholder .ph-icon { font-size:2.5rem; opacity:.3; }
+  .gallery-placeholder .ph-title { font-family:'Cinzel',serif; font-size:.75rem; color:rgba(248,245,240,.4); letter-spacing:.1em; }
+  .gallery-placeholder .ph-sub { font-size:.65rem; color:rgba(248,245,240,.2); line-height:1.5; }
+  .gallery-upload-note { text-align:center; margin-top:2rem; color:rgba(248,245,240,.3); font-size:.72rem; font-style:italic; }
+
+  /* ── VIDEO cards ── */
+  .video-thumb { position:relative; cursor:pointer; overflow:hidden; border-radius:2px; margin-bottom:.75rem; }
+  .video-thumb img { width:100%; display:block; aspect-ratio:16/9; object-fit:cover; transition:transform .4s; }
+  .video-thumb:hover img { transform:scale(1.03); }
+  .video-play-overlay { position:absolute; inset:0; background:rgba(26,74,107,.35); display:flex; align-items:center; justify-content:center; transition:background .3s; }
+  .video-thumb:hover .video-play-overlay { background:rgba(26,74,107,.15); }
+  .video-play-btn { width:48px; height:48px; border-radius:50%; background:rgba(201,168,76,.9); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:var(--ink); padding-left:3px; transition:transform .2s,background .2s; }
+  .video-thumb:hover .video-play-btn { transform:scale(1.1); background:var(--gold); }
+  .video-frame-wrap iframe { display:block; border-radius:2px; }
+  .video-coming-soon { font-size:.65rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(248,245,240,.25); padding:.5rem 0; border-top:1px solid rgba(201,168,76,.1); margin-top:.5rem; }
+
+  /* ── AUDIO GUIDE ── */
+  #audio-guide { background:var(--aegean); color:var(--marble); }
+  #audio-guide .section-title { color:var(--marble); }
+  .audio-grid { max-width:1200px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:1.5rem; }
+  .audio-card { background:rgba(255,255,255,.05); border:1px solid rgba(201,168,76,.2); padding:1.75rem; transition:background .3s,transform .3s; position:relative; overflow:hidden; }
+  .audio-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(to right,var(--gold),transparent); opacity:0; transition:opacity .3s; }
+  .audio-card:hover { background:rgba(255,255,255,.08); transform:translateY(-3px); }
+  .audio-card:hover::before { opacity:1; }
+  .audio-site-name { font-family:'Cinzel',serif; font-size:.95rem; color:var(--gold); margin-bottom:.2rem; letter-spacing:.05em; }
+  .audio-location { font-size:.62rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(248,245,240,.3); margin-bottom:.9rem; }
+  .audio-preview { font-family:'Cormorant Garamond',serif; font-size:.95rem; font-style:italic; line-height:1.7; color:rgba(248,245,240,.55); margin-bottom:1.1rem; min-height:55px; }
+  .audio-controls { display:flex; align-items:center; gap:1rem; }
+  .play-btn { width:42px; height:42px; border-radius:50%; border:1px solid rgba(201,168,76,.4); background:transparent; color:var(--gold); font-size:.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .3s,transform .2s; flex-shrink:0; }
+  .play-btn:hover { background:rgba(201,168,76,.15); transform:scale(1.05); }
+  .play-btn.playing { background:rgba(201,168,76,.2); }
+  .audio-progress-wrap { flex:1; display:flex; flex-direction:column; gap:.3rem; }
+  .audio-status { font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(248,245,240,.35); }
+  .audio-bar { width:100%; height:2px; background:rgba(255,255,255,.1); cursor:pointer; }
+  .audio-bar-fill { height:100%; background:var(--gold); width:0%; transition:width .3s; }
+  .generate-btn { width:100%; padding:.7rem; background:transparent; border:1px solid rgba(201,168,76,.3); color:var(--gold); font-family:'Jost',sans-serif; font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; cursor:pointer; transition:background .3s; margin-top:.6rem; }
+  .generate-btn:hover { background:rgba(201,168,76,.1); }
+  .generate-btn:disabled { opacity:.4; cursor:wait; }
+  .audio-text-display { margin-top:1rem; font-family:'Cormorant Garamond',serif; font-size:.98rem; font-style:italic; line-height:1.8; color:rgba(248,245,240,.65); border-left:2px solid rgba(201,168,76,.3); padding-left:1rem; display:none; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .spinner { width:14px; height:14px; border:2px solid rgba(201,168,76,.3); border-top-color:var(--gold); border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; }
+
+  /* ── HOTELS ── */
+  #hotels { background:var(--bone); }
+  .hotels-grid { max-width:1200px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:1.5rem; }
+  .hotel-card { background:white; border:1px solid rgba(201,168,76,.15); overflow:hidden; transition:transform .3s,box-shadow .3s; }
+  .hotel-card:hover { transform:translateY(-4px); box-shadow:0 18px 45px rgba(26,74,107,.12); }
+  .hotel-header { background:var(--aegean); padding:1.4rem; position:relative; }
+  .hotel-nights { position:absolute; top:1rem; right:1rem; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; background:rgba(201,168,76,.2); color:var(--gold); padding:.22rem .5rem; }
+  .hotel-name { font-family:'Cinzel',serif; font-size:.95rem; color:var(--marble); letter-spacing:.05em; margin-bottom:.2rem; }
+  .hotel-city { font-size:.62rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(248,245,240,.35); }
+  .hotel-body { padding:1.2rem; }
+  .hotel-stars { color:var(--gold); font-size:.68rem; margin-bottom:.7rem; }
+  .hotel-review { font-size:.78rem; line-height:1.7; color:#666; font-style:italic; margin-bottom:.9rem; border-left:2px solid rgba(201,168,76,.3); padding-left:.7rem; }
+  .hotel-detail { font-size:.68rem; letter-spacing:.08em; color:var(--mist); display:flex; align-items:center; gap:.4rem; margin-bottom:.28rem; }
+
+  /* ── RESTAURANTS ── */
+  #restaurants { background:var(--marble); }
+  .resto-tabs { display:flex; justify-content:center; gap:.5rem; flex-wrap:wrap; margin-bottom:2.5rem; padding:0 2rem; }
+  .resto-tab { font-size:.6rem; letter-spacing:.25em; text-transform:uppercase; padding:.35rem .9rem; border:1px solid rgba(26,74,107,.2); color:rgba(26,74,107,.45); background:transparent; cursor:pointer; transition:all .3s; }
+  .resto-tab.active,.resto-tab:hover { border-color:var(--terracotta); color:var(--terracotta); background:rgba(196,98,45,.05); }
+  .resto-grid { max-width:1200px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:1.5rem; }
+  .resto-card { background:white; border:1px solid rgba(201,168,76,.12); padding:1.5rem; transition:transform .3s,box-shadow .3s; display:none; }
+  .resto-card.visible { display:block; }
+  .resto-card:hover { transform:translateY(-3px); box-shadow:0 12px 35px rgba(26,74,107,.1); }
+  .resto-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.5rem; }
+  .resto-location { font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; color:var(--terracotta); margin-bottom:.35rem; }
+  .resto-name { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; color:var(--aegean); }
+  .resto-rating { font-size:.75rem; color:var(--gold); white-space:nowrap; }
+  .resto-type { font-size:.68rem; color:var(--mist); margin-bottom:.65rem; letter-spacing:.08em; }
+  .resto-desc { font-size:.8rem; line-height:1.75; color:#555; margin-bottom:.75rem; }
+  .resto-hours { font-size:.65rem; color:var(--mist); letter-spacing:.08em; }
+  .resto-review { font-size:.75rem; font-style:italic; color:#777; border-left:2px solid rgba(196,98,45,.25); padding-left:.6rem; margin-top:.6rem; line-height:1.6; }
+
+  /* ── PACKING LIST ── */
+  #packing { background:white; }
+  .packing-grid { max-width:1100px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:2rem; }
+  .pack-category { }
+  .pack-icon { font-size:1.4rem; margin-bottom:.6rem; }
+  .pack-title { font-family:'Cinzel',serif; font-size:.78rem; letter-spacing:.12em; color:var(--aegean); margin-bottom:.9rem; padding-bottom:.5rem; border-bottom:1px solid rgba(201,168,76,.25); }
+  .pack-items { list-style:none; }
+  .pack-item { display:flex; align-items:center; gap:.6rem; padding:.3rem 0; font-size:.78rem; color:#555; cursor:pointer; transition:color .2s; border-bottom:1px solid rgba(0,0,0,.04); }
+  .pack-item:hover { color:var(--aegean); }
+  .pack-check { width:16px; height:16px; border:1px solid rgba(26,74,107,.25); border-radius:2px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .2s; font-size:.65rem; color:white; background:transparent; }
+  .pack-item.checked .pack-check { background:var(--olive); border-color:var(--olive); }
+  .pack-item.checked .pack-check::after { content:'✓'; }
+  .pack-item.checked span { text-decoration:line-through; color:#aaa; }
+  .packing-progress { max-width:1100px; margin:0 auto 2rem; padding:0 2rem; }
+  .progress-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mist); margin-bottom:.5rem; display:flex; justify-content:space-between; }
+  .progress-bar { height:4px; background:rgba(26,74,107,.1); border-radius:2px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(to right,var(--aegean),var(--gold)); transition:width .4s; }
+
+  /* ── PRACTICAL ── */
+  #practical { background:#f0ece4; }
+  .practical-grid { max-width:1100px; margin:0 auto; padding:0 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:2rem; }
+  .practical-card { }
+  .practical-icon { font-size:1.4rem; margin-bottom:.7rem; }
+  .practical-title { font-family:'Cinzel',serif; font-size:.78rem; letter-spacing:.1em; color:var(--aegean); margin-bottom:.7rem; }
+  .practical-items { list-style:none; }
+  .practical-items li { font-size:.78rem; line-height:1.85; color:#555; padding-left:.7rem; position:relative; }
+  .practical-items li::before { content:'—'; position:absolute; left:0; color:var(--gold); opacity:.6; }
+
+  footer { background:var(--ink); color:rgba(248,245,240,.35); text-align:center; padding:2rem; font-size:.68rem; letter-spacing:.2em; font-family:'Cinzel',serif; }
+
+  @media(max-width:768px){
+    .timeline::before{display:none}
+    .day-card{grid-template-columns:1fr}
+    .day-card:nth-child(even) .day-content{grid-column:1}
+    .day-card:nth-child(even) .day-meta{grid-column:1;text-align:left;padding-right:0;padding-left:0}
+    .day-spacer{display:none}
+    .day-meta{padding-left:0;padding-top:.5rem}
+    .nav-links{display:none}
+    #routeMap{height:350px}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-columns">
+    <div class="col-piece" style="height:160px"></div>
+    <div class="col-piece" style="height:120px"></div>
+    <div class="col-piece" style="height:180px"></div>
+    <div class="col-piece" style="height:100px"></div>
+    <div class="col-piece" style="height:160px"></div>
+    <div class="col-piece" style="height:140px"></div>
+    <div class="col-piece" style="height:120px"></div>
+    <div class="col-piece" style="height:170px"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">An Odyssey Through Ancient Greece</p>
+    <h1 class="hero-title">ΕΛΛΆΔΑ</h1>
+    <p class="hero-subtitle">Athens · Meteora · Delphi · Nafplio</p>
+    <p class="hero-dates">7 — 17 March 2025 &nbsp;·&nbsp; 11 Days</p>
+  </div>
+  <div class="hero-route">
+    <span>Amsterdam</span><div class="dot"></div>
+    <span>Athens</span><div class="dot"></div>
+    <span>Meteora</span><div class="dot"></div>
+    <span>Delphi</span><div class="dot"></div>
+    <span>Nafplio</span><div class="dot"></div>
+    <span>Sounion</span><div class="dot"></div>
+    <span>Home</span>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ΕΛΛΆΔΑ 2025</div>
+  <ul class="nav-links">
+    <li><a href="#map-section">Map</a></li>
+    <li><a href="#weather">Weather</a></li>
+    <li><a href="#itinerary">Itinerary</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#audio-guide">Videos</a></li>
+    <li><a href="#hotels">Hotels</a></li>
+    <li><a href="#restaurants">Eat</a></li>
+    <li><a href="#packing">Pack</a></li>
+  </ul>
+</nav>
+
+<!-- TRIP STRIP -->
+<div class="budget-strip">
+  <div class="budget-item"><span class="budget-label">Duration</span><span class="budget-value">11 Days</span></div>
+  <div class="budget-item"><span class="budget-label">Km Driven</span><span class="budget-value">~650 km</span></div>
+  <div class="budget-item"><span class="budget-label">Ancient Sites</span><span class="budget-value">8+</span></div>
+  <div class="budget-item"><span class="budget-label">Restaurants</span><span class="budget-value">9</span></div>
+  <div class="budget-item"><span class="budget-label">Countries</span><span class="budget-value">1 🇬🇷</span></div>
+</div>
+
+<!-- MAP -->
+<section id="map-section">
+  <div class="section-header">
+    <span class="section-tag">Your Route</span>
+    <h2 class="section-title">Interactive Route Map</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="map-wrap">
+    <div id="routeMap"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c9a84c"></div>Hotels</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c4622d"></div>Sites &amp; Attractions</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6b7c4b"></div>Restaurants</div>
+    </div>
+    <p class="map-note">Click any marker for details · Route line shows driving path</p>
+  </div>
+</section>
+
+<!-- WEATHER -->
+<section id="weather">
+  <div class="section-header">
+    <span class="section-tag">Live Conditions</span>
+    <h2 class="section-title">Weather at Each Stop</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="weather-grid" id="weatherGrid">
+    <div class="weather-loading">
+      <span class="spinner" style="border-color:rgba(26,74,107,.2);border-top-color:var(--aegean)"></span>
+      <p>Fetching live weather…</p>
+    </div>
+  </div>
+  <p class="weather-note" id="weatherNote"></p>
+</section>
+
+<!-- ITINERARY -->
+<section id="itinerary">
+  <div class="section-header">
+    <span class="section-tag">Day by Day</span>
+    <h2 class="section-title">The Itinerary</h2>
+    <div class="section-divider"></div>
+    <p style="color:var(--mist);font-size:.75rem;margin-top:1rem;font-style:italic">Click any day to expand</p>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- PHOTO GALLERY -->
+<section id="gallery">
+  <div class="section-header">
+    <span class="section-tag">Visual Journey</span>
+    <h2 class="section-title">Photo Gallery</h2>
+    <div class="section-divider"></div>
+    <p class="gallery-intro">A visual preview of what awaits — add your own photos as you travel</p>
+  </div>
+  <div class="gallery-tabs">
+    <button class="gallery-tab active" onclick="filterGallery('all',this)">All</button>
+    <button class="gallery-tab" onclick="filterGallery('athens',this)">Athens</button>
+    <button class="gallery-tab" onclick="filterGallery('meteora',this)">Meteora</button>
+    <button class="gallery-tab" onclick="filterGallery('delphi',this)">Delphi</button>
+    <button class="gallery-tab" onclick="filterGallery('nafplio',this)">Nafplio</button>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+  <p class="gallery-upload-note">📸 Replace placeholder images with your own photos by editing the gallery data in the HTML</p>
+</section>
+
+<!-- VIDEO GUIDE -->
+<section id="audio-guide">
+  <div class="section-header">
+    <span class="section-tag">Watch Before You Visit</span>
+    <h2 class="section-title">Video Guide</h2>
+    <div class="section-divider"></div>
+    <p style="color:rgba(248,245,240,.45);font-size:.78rem;margin-top:1rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7">Curated videos for every major site on the route. Watch before you go — or at the site itself.</p>
+  </div>
+  <div class="audio-grid" id="audioGrid"></div>
+</section>
+
+<!-- HOTELS -->
+<section id="hotels">
+  <div class="section-header">
+    <span class="section-tag">Where You'll Sleep</span>
+    <h2 class="section-title">Hotels</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="hotels-grid">
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">3 Nights · Days 1–3</span>
+        <div class="hotel-name">Luwian Boutique Hotel</div>
+        <div class="hotel-city">Athens, Plaka</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★☆ &nbsp;4.7 / 5 (356 reviews)</div>
+        <p class="hotel-review">"Rooms are incredibly spacious and everything feels brand new. The staff demonstrated outstanding professionalism."</p>
+        <div class="hotel-detail">📍 P. Tsaldari 10, Athens</div>
+        <div class="hotel-detail">🚇 Short walk from Omonia Metro</div>
+        <div class="hotel-detail">🏛 Walking distance to Plaka &amp; Acropolis</div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">2 Nights · Days 4–5</span>
+        <div class="hotel-name">Mirabilis Boutique Hotel</div>
+        <div class="hotel-city">Meteora, Kalambaka</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★★ &nbsp;4.9 / 5 (273 reviews)</div>
+        <p class="hotel-review">"Private deck with breathtaking mountain views. Mesmerizing view to Meteora rocks. Felt welcomed from the moment we arrived."</p>
+        <div class="hotel-detail">📍 Vitoima Terma, Kalambaka</div>
+        <div class="hotel-detail">🏔 Direct Meteora rock views</div>
+        <div class="hotel-detail">☕ Buffet + made-to-order breakfast · ~€150/night</div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">1 Night · Day 6</span>
+        <div class="hotel-name">Kastalia Boutique Hotel</div>
+        <div class="hotel-city">Delphi</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★☆ &nbsp;4.3 / 5 (616 reviews)</div>
+        <p class="hotel-review">"Breakfast on the terrace offers a superb view. Just 10 minutes from the ancient site. Great value."</p>
+        <div class="hotel-detail">📍 Vasileos Pavlou, Delphi</div>
+        <div class="hotel-detail">🏛 10 min walk to Oracle site</div>
+        <div class="hotel-detail">💶 €60/night · Free street parking</div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">3 Nights · Days 7–9</span>
+        <div class="hotel-name">Espero Royal Stay</div>
+        <div class="hotel-city">Nafplio</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★★ &nbsp;4.8 / 5 (102 reviews)</div>
+        <p class="hotel-review">"Perfect location near the harbour. Very stylish decor, great lighting, big balcony. 50m from Syntagma Square."</p>
+        <div class="hotel-detail">📍 Dim. Ipsilanti 10, Nafplio</div>
+        <div class="hotel-detail">⚓ 50m from the harbour</div>
+        <div class="hotel-detail">🍳 Breakfast included · ~€221 total</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESTAURANTS -->
+<section id="restaurants">
+  <div class="section-header">
+    <span class="section-tag">Real Places, Real Reviews</span>
+    <h2 class="section-title">Where to Eat</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="resto-tabs">
+    <button class="resto-tab active" onclick="filterResto('all',this)">All Stops</button>
+    <button class="resto-tab" onclick="filterResto('athens',this)">Athens</button>
+    <button class="resto-tab" onclick="filterResto('meteora',this)">Meteora</button>
+    <button class="resto-tab" onclick="filterResto('nafplio',this)">Nafplio</button>
+  </div>
+  <div class="resto-grid">
+
+    <div class="resto-card visible" data-city="athens">
+      <div class="resto-location">Athens · Plaka</div>
+      <div class="resto-top">
+        <div class="resto-name">Aerides Plaka</div>
+        <div class="resto-rating">★ 4.7</div>
+      </div>
+      <div class="resto-type">Traditional Greek · Outdoor Dining</div>
+      <p class="resto-desc">Tucked in a charming Plaka alleyway with outdoor tables. Legendary grilled octopus, big mezedes plates to share, and staff so warm they'll send you off with complimentary dessert and shots.</p>
+      <div class="resto-hours">📍 Diogenous 3 · Open daily 10am–midnight</div>
+      <p class="resto-review">"Easily our favorite restaurant in Athens... no misses. The staff was warm and welcoming, gave us complimentary orange cake and digestive shots."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="athens">
+      <div class="resto-location">Athens · Plaka</div>
+      <div class="resto-top">
+        <div class="resto-name">Scholarhio</div>
+        <div class="resto-rating">★ 4.5</div>
+      </div>
+      <div class="resto-type">Ouzeri · Fixed Menu €20pp</div>
+      <p class="resto-desc">Classic ouzeri with a brilliant fixed €20 menu — pick starter, main, salad, dessert and a drink. The best moussaka in Plaka and huge generous portions. Closed Tuesdays.</p>
+      <div class="resto-hours">📍 Tripodon 14 · Open Wed–Mon 11:30am–midnight</div>
+      <p class="resto-review">"Fixed price menus are the best choice — 5 different foods for 2 people including bread and drinks for €40 total."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="athens">
+      <div class="resto-location">Athens · Plaka</div>
+      <div class="resto-top">
+        <div class="resto-name">Taverna Saita</div>
+        <div class="resto-rating">★ 4.5</div>
+      </div>
+      <div class="resto-type">Traditional Taverna · Fresh &amp; Local</div>
+      <p class="resto-desc">Genuine neighbourhood taverna in the heart of Plaka. Everything is clearly homemade. Try the oven-made eggplant and the sea bream. Arrive at 5:30–6:30 to avoid queuing.</p>
+      <div class="resto-hours">📍 Kidathineon 21 · Open daily noon–11pm</div>
+      <p class="resto-review">"Feels genuinely local and not touristy at all. Greek salad with tomatoes that smell and taste like nothing I've had before."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="meteora">
+      <div class="resto-location">Meteora · Kalambaka</div>
+      <div class="resto-top">
+        <div class="resto-name">Elias Garden</div>
+        <div class="resto-rating">★ 4.7</div>
+      </div>
+      <div class="resto-type">Greek · Live Music · Best in Meteora</div>
+      <p class="resto-desc">The best meal in Meteora, full stop. Homemade pasta, stewed beef that melts, outstanding beetroot-garlic sauce with bread. The chef Christina's moussaka is legendary. Complimentary dessert to finish.</p>
+      <div class="resto-hours">📍 Trikalon 149 · Open daily 11am–10pm (Sat until 10pm)</div>
+      <p class="resto-review">"Best moussaka in Greece! Our waiter explained all the dishes and talked about Greek culture. All foods were great."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="meteora">
+      <div class="resto-location">Meteora · Kalambaka</div>
+      <div class="resto-top">
+        <div class="resto-name">Meteoron Panorama</div>
+        <div class="resto-rating">★ 4.4</div>
+      </div>
+      <div class="resto-type">Greek · Stunning Rock Views</div>
+      <p class="resto-desc">Unbeatable evening views of the rock formations. Beetroot salad with sultanas is a must. The lamb dish and stuffed chicken are excellent. Perfect for a sunset dinner after the monasteries.</p>
+      <div class="resto-hours">📍 Patriarchou Dimitriou 54 · Open daily noon–11pm</div>
+      <p class="resto-review">"Even at night you can see the shape of the mountains. The mousakka was delicious. Would recommend and would return."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="nafplio">
+      <div class="resto-location">Nafplio · Old Town</div>
+      <div class="resto-top">
+        <div class="resto-name">Pidalio Tavern</div>
+        <div class="resto-rating">★ 4.7</div>
+      </div>
+      <div class="resto-type">Creative Greek · Farewell Dinner Pick</div>
+      <p class="resto-desc">The finest kitchen in Nafplio. Slow-cooked lamb giosa with trahana, creative reinterpretations of classic dishes, exceptional seafood. Perfect for your farewell dinner — book ahead.</p>
+      <div class="resto-hours">📍 25is Martiou 5 · Open Wed–Mon 1–11pm (closed Tue)</div>
+      <p class="resto-review">"One of the most delicious meals I've had. Grilled octopus, slow-cooked lamb, fresh sea bream — all outstanding."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="nafplio">
+      <div class="resto-location">Nafplio · Waterfront</div>
+      <div class="resto-top">
+        <div class="resto-name">The Nest</div>
+        <div class="resto-rating">★ 4.6</div>
+      </div>
+      <div class="resto-type">Seafood · Harbour Views</div>
+      <p class="resto-desc">On the waterfront with Bourtzi Castle views. Order the shrimp saganaki or whole grilled sea bream, paired with Nemean Agiorgitiko. The formally-suited waiter who explains every dish is part of the charm.</p>
+      <div class="resto-hours">📍 Boumpoulinas 61 · Open daily 11:30am–10pm</div>
+      <p class="resto-review">"The shrimp saganaki and seafood pasta were absolutely delicious! Fresh, full of flavor, perfectly balanced."</p>
+    </div>
+
+    <div class="resto-card visible" data-city="nafplio">
+      <div class="resto-location">Nafplio · Old Town</div>
+      <div class="resto-top">
+        <div class="resto-name">Branco</div>
+        <div class="resto-rating">★ 4.9</div>
+      </div>
+      <div class="resto-type">Brunch · Best Coffee in Nafplio</div>
+      <p class="resto-desc">The perfect morning after a big day of ruins. The best brunch in Nafplio — incredible pancakes, fresh eggs, outstanding coffee. Put your name down if there's a queue, it moves fast. Open until 4–6pm only.</p>
+      <div class="resto-hours">📍 Staikopoulou 4 · Open daily 8am–4pm (Sat until 6pm)</div>
+      <p class="resto-review">"Must go if you visit Nafplio. The best brunch in town. Fresh food, wonderful service, lovely atmosphere in the old town."</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- PACKING LIST -->
+<section id="packing">
+  <div class="section-header">
+    <span class="section-tag">Before You Pack</span>
+    <h2 class="section-title">Packing List</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="packing-progress">
+    <div class="progress-label">
+      <span>Packing Progress</span>
+      <span id="packCount">0 / 0 items packed</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="packing-grid" id="packingGrid"></div>
+</section>
+
+<!-- PRACTICAL -->
+<section id="practical">
+  <div class="section-header">
+    <span class="section-tag">Before You Go</span>
+    <h2 class="section-title">Practical Information</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="practical-grid">
+    <div class="practical-card">
+      <div class="practical-icon">🚗</div>
+      <div class="practical-title">Driving in Greece</div>
+      <ul class="practical-items">
+        <li>Hire from Athens airport, return same</li>
+        <li>Drive on the right, EU licence fine</li>
+        <li>Toll roads Athens → Meteora ~€15</li>
+        <li>Free parking in Delphi &amp; Nafplio outskirts</li>
+        <li>March is pre-season — roads very quiet</li>
+        <li>Full tank policy — return full</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">🏛</div>
+      <div class="practical-title">Entry Prices</div>
+      <ul class="practical-items">
+        <li>Acropolis: €30 — book online in advance</li>
+        <li>National Museum: €12</li>
+        <li>Meteora monasteries: €3 each</li>
+        <li>Delphi site + museum: €12</li>
+        <li>Mycenae + Treasury of Atreus: €20</li>
+        <li>Epidaurus: €20 · Mystras: €12</li>
+        <li>Temple of Poseidon: €10</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">👗</div>
+      <div class="practical-title">Dress &amp; Clothing</div>
+      <ul class="practical-items">
+        <li>Meteora: shoulders + knees covered to enter</li>
+        <li>Sarongs to borrow at monastery gates</li>
+        <li>Sturdy shoes for all archaeological sites</li>
+        <li>March: 8–18°C — layers essential</li>
+        <li>Light waterproof for showers</li>
+        <li>Cape Sounion is very windy</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">💳</div>
+      <div class="practical-title">Money &amp; Costs</div>
+      <ul class="practical-items">
+        <li>Euro (€) throughout Greece</li>
+        <li>Cards accepted most places</li>
+        <li>Keep €20–30 cash for small tavernas</li>
+        <li>Tipping: 10% is generous &amp; appreciated</li>
+        <li>Petrol: ~€1.85/litre in March</li>
+        <li>Food budget: €25–35/day per person</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">⏰</div>
+      <div class="practical-title">Timing Tips</div>
+      <ul class="practical-items">
+        <li>Acropolis at 8am — beat the tour buses</li>
+        <li>Meteora at dawn for mist and solitude</li>
+        <li>Delphi: go early, site opens 8am</li>
+        <li>Sounion: arrive 1hr before sunset (6:45pm)</li>
+        <li>March is shoulder season — far fewer crowds</li>
+        <li>Some sites close Monday — check ahead</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">📱</div>
+      <div class="practical-title">Apps &amp; Resources</div>
+      <ul class="practical-items">
+        <li>Google Maps — works well throughout</li>
+        <li>etickets.tap.gr — Athens Acropolis tickets</li>
+        <li>Waze — useful for mountain roads</li>
+        <li>Google Translate — camera mode for menus</li>
+        <li>Duolingo — learn a few Greek phrases</li>
+        <li>This website — bookmark it!</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>ΕΛΛΆΔΑ 2025 &nbsp;·&nbsp; Amsterdam → Athens → Meteora → Delphi → Nafplio → Sounion → Home</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// LOAD LEAFLET THEN INIT MAP
+// ═══════════════════════════════════════════
+function initMap() {
+  const map = L.map('routeMap', { zoomControl:true }).setView([38.5, 22.5], 6);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'© OpenStreetMap © CARTO', subdomains:'abcd', maxZoom:19
+  }).addTo(map);
+
+  const hotelIcon = L.divIcon({ className:'', html:'<div style="width:14px;height:14px;border-radius:50%;background:#c9a84c;border:2px solid #f5f0e8;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>', iconSize:[14,14], iconAnchor:[7,7] });
+  const siteIcon  = L.divIcon({ className:'', html:'<div style="width:12px;height:12px;border-radius:50%;background:#c4622d;border:2px solid #f5f0e8;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>', iconSize:[12,12], iconAnchor:[6,6] });
+  const restoIcon = L.divIcon({ className:'', html:'<div style="width:10px;height:10px;border-radius:50%;background:#6b7c4b;border:2px solid #f5f0e8;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>', iconSize:[10,10], iconAnchor:[5,5] });
+
+  const markers = [
+    { lat:37.9834, lng:23.7262, icon:hotelIcon, title:'Luwian Boutique Hotel',          desc:'Your Athens base · 3 nights · Steps from Plaka & Acropolis' },
+    { lat:37.9715, lng:23.7257, icon:siteIcon,  title:'Acropolis of Athens',             desc:'Day 2 · Go at 8am · Book tickets in advance · €30' },
+    { lat:37.9860, lng:23.7326, icon:siteIcon,  title:'National Archaeological Museum',  desc:'Day 3 · Mask of Agamemnon · Antikythera Mechanism · €12' },
+    { lat:39.7217, lng:21.6306, icon:siteIcon,  title:'Meteora Monasteries',             desc:'Days 4–5 · UNESCO World Heritage · Go at dawn for mist' },
+    { lat:39.6971, lng:21.6211, icon:hotelIcon, title:'Mirabilis Boutique Hotel',        desc:'2 nights · Direct Meteora views · Rated 4.9/5' },
+    { lat:38.4824, lng:22.5011, icon:siteIcon,  title:'Delphi — Oracle of Apollo',       desc:'Day 6 · Temple of Apollo · Sacred Way · €12' },
+    { lat:38.4783, lng:22.4950, icon:hotelIcon, title:'Kastalia Boutique Hotel',         desc:'1 night · 10 min walk from site · €60/night' },
+    { lat:37.5667, lng:22.7966, icon:hotelIcon, title:'Espero Royal Stay',               desc:'3 nights · 50m from Nafplio harbour · Breakfast included' },
+    { lat:37.7309, lng:22.7561, icon:siteIcon,  title:'Ancient Mycenae',                 desc:'Day 8 · Lion Gate · Treasury of Atreus · €20' },
+    { lat:37.5961, lng:23.0793, icon:siteIcon,  title:'Theatre of Epidaurus',            desc:'Day 8 · Best preserved ancient theatre · €20' },
+    { lat:37.1050, lng:22.4300, icon:siteIcon,  title:'Mystras',                         desc:'Day 9 · Byzantine ghost city · Glowing frescoes · €12' },
+    { lat:37.6502, lng:24.0246, icon:siteIcon,  title:'Temple of Poseidon, Sounion',     desc:'Day 10 · Byron carved his name here · Sunset · €10' },
+    { lat:37.9724, lng:23.7293, icon:restoIcon, title:'Scholarhio, Athens',              desc:'Classic ouzeri · Fixed menu €20pp · Closed Tuesdays' },
+    { lat:37.9745, lng:23.7280, icon:restoIcon, title:'Aerides Plaka, Athens',           desc:'Best taverna in Plaka · Grilled octopus · 4.7★' },
+    { lat:39.7075, lng:21.6211, icon:restoIcon, title:'Elias Garden, Meteora',           desc:'Best meal in Meteora · Homemade pasta · Live music' },
+    { lat:37.5648, lng:22.8061, icon:restoIcon, title:'Pidalio Tavern, Nafplio',         desc:'Finest in Nafplio · Farewell dinner pick · 4.7★' },
+    { lat:37.5672, lng:22.7982, icon:restoIcon, title:'The Nest, Nafplio',               desc:'Seafood · Harbour views · Shrimp saganaki · 4.6★' },
+  ];
+
+  markers.forEach(m => {
+    L.marker([m.lat, m.lng], { icon: m.icon }).addTo(map)
+      .bindPopup(`<strong>${m.title}</strong>${m.desc}`);
+  });
+
+  L.polyline([
+    [37.9715, 23.7257],
+    [39.7217, 21.6306],
+    [38.4824, 22.5011],
+    [37.5667, 22.7966],
+    [37.6502, 24.0246],
+    [37.9715, 23.7257],
+  ], { color:'rgba(201,168,76,0.6)', weight:2, dashArray:'6,8' }).addTo(map);
+}
+
+// Dynamically load Leaflet JS then init
+(function loadLeaflet() {
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.crossOrigin = 'anonymous';
+  s.onload = initMap;
+  s.onerror = () => {
+    // Try fallback CDN
+    const s2 = document.createElement('script');
+    s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+    s2.crossOrigin = 'anonymous';
+    s2.onload = initMap;
+    s2.onerror = () => {
+      document.getElementById('routeMap').innerHTML = '<p style="text-align:center;color:var(--mist);padding:3rem;font-family:Jost,sans-serif">Map unavailable — check your connection</p>';
+    };
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s);
+})();
+
+// ═══════════════════════════════════════════
+// GALLERY
+// ═══════════════════════════════════════════
+const GALLERY_ITEMS = [
+  { category:'athens',  title:'The Acropolis',       sub:'Athens · Day 2',         img:'https://images.unsplash.com/photo-1555993539-1732b0258235?w=900&q=80' },
+  { category:'athens',  title:'Plaka Old Town',       sub:'Athens · Day 1',         img:'https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?w=900&q=80' },
+  { category:'athens',  title:'Anafiotika',           sub:'Athens · Day 2',         img:'https://images.unsplash.com/photo-1606923829579-0cb981a83e2e?w=900&q=80' },
+  { category:'meteora', title:'Meteora Monasteries',  sub:'Kalambaka · Days 4–5',   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80' },
+  { category:'meteora', title:'The Rock Pillars',     sub:'Meteora · Dawn',         img:'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=900&q=80' },
+  { category:'delphi',  title:'Temple of Apollo',     sub:'Delphi · Day 6',         img:'https://images.unsplash.com/photo-1571406252241-db0280bd36cd?w=900&q=80' },
+  { category:'delphi',  title:'Mount Parnassus',      sub:'Delphi · Day 6',         img:'https://images.unsplash.com/photo-1594322436404-5a0526db4d13?w=900&q=80' },
+  { category:'nafplio', title:'Nafplio Harbour',      sub:'Nafplio · Days 7–9',     img:'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=900&q=80' },
+  { category:'nafplio', title:'Ancient Mycenae',      sub:'Mycenae · Day 8',        img:'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=900&q=80' },
+  { category:'nafplio', title:'Temple of Poseidon',   sub:'Cape Sounion · Day 10',  img:'https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=900&q=80' },
+];
+
+let currentFilter = 'all';
+
+function buildGallery(filter) {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? GALLERY_ITEMS : GALLERY_ITEMS.filter(i => i.category === filter);
+  filtered.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.innerHTML = `
+      <img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'gallery-placeholder\'><div class=\'ph-icon\'>🏛</div><div class=\'ph-title\'>${item.title}</div><div class=\'ph-sub\'>${item.sub}</div></div>'">
+      <div class="gallery-item-overlay">
+        <div class="gallery-item-title">${item.title}</div>
+        <div class="gallery-item-sub">${item.sub}</div>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+
+function filterGallery(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  buildGallery(filter);
+}
+
+buildGallery('all');
+
+// ═══════════════════════════════════════════
+// RESTAURANT FILTER
+// ═══════════════════════════════════════════
+function filterResto(city, btn) {
+  document.querySelectorAll('.resto-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.resto-card').forEach(card => {
+    card.classList.toggle('visible', city === 'all' || card.dataset.city === city);
+  });
+}
+
+// ═══════════════════════════════════════════
+// PACKING LIST
+// ═══════════════════════════════════════════
+const PACKING = [
+  { icon:'👗', title:'Clothing', items:['Light waterproof jacket','Warm layer / fleece','T-shirts x4','Comfortable walking trousers x2','Shorts (for warmer days)','Smart casual outfit (for dinners)','Swimwear (just in case)','Underwear x7','Socks x7'] },
+  { icon:'👟', title:'Footwear', items:['Sturdy walking shoes / trainers','Sandals for evenings','Flip flops for hotel'] },
+  { icon:'💊', title:'Health & Toiletries', items:['Sunscreen SPF 30+','Insect repellent','Lip balm with SPF','Paracetamol / ibuprofen','Blister plasters','Antihistamines','Travel insurance docs','EHIC / health card'] },
+  { icon:'📱', title:'Tech & Documents', items:['Passport (valid 6+ months)','Travel insurance printout','Flight & hotel confirmations','EU/international driving licence','Phone + charger','Power bank','Universal travel adapter','Earphones for audio guide','Camera / GoPro'] },
+  { icon:'🎒', title:'Day Pack Essentials', items:['Small day backpack','Reusable water bottle','Snacks for long drives','Sunglasses','Hat / cap for sun','Sarong (for monasteries)','Small torch / phone torch'] },
+  { icon:'💶', title:'Money & Admin', items:['Euros (€100–150 cash)','Bank card (notify bank before travel)','Emergency contact list','Copies of key docs (in email)','Car hire confirmation'] },
+];
+
+let packChecked = {};
+
+function buildPacking() {
+  const grid = document.getElementById('packingGrid');
+  grid.innerHTML = '';
+  let total = 0;
+  PACKING.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'pack-category';
+    const items = cat.items.map((item, i) => {
+      const key = cat.title + '_' + i;
+      total++;
+      const checked = packChecked[key] ? 'checked' : '';
+      return `<li class="pack-item ${checked}" onclick="togglePack('${key}', this)">
+        <div class="pack-check">${packChecked[key] ? '✓' : ''}</div>
+        <span>${item}</span>
+      </li>`;
+    }).join('');
+    div.innerHTML = `<div class="pack-icon">${cat.icon}</div><div class="pack-title">${cat.title}</div><ul class="pack-items">${items}</ul>`;
+    grid.appendChild(div);
+  });
+  updateProgress(total);
+}
+
+function togglePack(key, el) {
+  packChecked[key] = !packChecked[key];
+  el.classList.toggle('checked', packChecked[key]);
+  const checkEl = el.querySelector('.pack-check');
+  checkEl.textContent = packChecked[key] ? '✓' : '';
+  const total = Object.keys(packChecked).length + PACKING.reduce((a,c) => a + c.items.length, 0) - Object.keys(packChecked).length;
+  updateProgress(PACKING.reduce((a,c) => a + c.items.length, 0));
+}
+
+function updateProgress(total) {
+  const checked = Object.values(packChecked).filter(Boolean).length;
+  const pct = total > 0 ? (checked / total) * 100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('packCount').textContent = `${checked} / ${total} items packed`;
+}
+
+buildPacking();
+
+// ═══════════════════════════════════════════
+// VIDEO GUIDE
+// ═══════════════════════════════════════════
+const SITES = [
+  {
+    id: 'acropolis',
+    name: 'Acropolis of Athens',
+    location: 'Athens · Day 2',
+    preview: 'The citadel of the ancient world, rising over the city that invented democracy...',
+    videoId: '9XvUjdTkJ3o'
+  },
+  {
+    id: 'anafiotika',
+    name: 'Anafiotika',
+    location: 'Athens · Day 2',
+    preview: 'A pocket of the Cyclades, improbably transplanted beneath the Acropolis rock...',
+    videoId: null
+  },
+  {
+    id: 'national-museum',
+    name: 'National Archaeological Museum',
+    location: 'Athens · Day 3',
+    preview: 'Five thousand years of human endeavour under one roof...',
+    videoId: null
+  },
+  {
+    id: 'meteora',
+    name: 'Meteora Monasteries',
+    location: 'Meteora · Days 4–5',
+    preview: 'Monasteries balanced on impossible pillars of rock, between earth and heaven...',
+    videoId: 'gaUuqHW9-Z0'
+  },
+  {
+    id: 'delphi',
+    name: 'Delphi — Oracle of Apollo',
+    location: 'Delphi · Day 6',
+    preview: 'The Greeks called this place the navel of the world...',
+    videoId: 'Wvdy0UQNO9E'
+  },
+  {
+    id: 'mycenae',
+    name: 'Mycenae',
+    location: 'Argolid · Day 8',
+    preview: 'City of Agamemnon, of golden masks and the curse of the house of Atreus...',
+    videoId: 'cki-9ANZTLg'
+  },
+  {
+    id: 'epidaurus',
+    name: 'Theatre of Epidaurus',
+    location: 'Argolid · Day 8',
+    preview: 'The most perfect acoustic space ever built by human hands...',
+    videoId: '2CVO9Vd067U'
+  },
+  {
+    id: 'sounion',
+    name: 'Temple of Poseidon, Sounion',
+    location: 'Cape Sounion · Day 10',
+    preview: 'Where Byron carved his name into marble, and the Aegean meets the sky...',
+    videoId: 'Wd5zplNnErY'
+  },
+];
+
+function renderAudioCards() {
+  const grid = document.getElementById('audioGrid');
+  SITES.forEach(site => {
+    const card = document.createElement('div');
+    card.className = 'audio-card';
+
+    if (site.videoId) {
+      // Has a YouTube video
+      card.innerHTML = `
+        <div class="audio-site-name">${site.name}</div>
+        <div class="audio-location">${site.location}</div>
+        <div class="video-preview-wrap" id="preview-${site.id}">
+          <div class="video-thumb" onclick="loadVideo('${site.id}', '${site.videoId}')">
+            <img src="https://img.youtube.com/vi/${site.videoId}/hqdefault.jpg"
+                 alt="${site.name}" loading="lazy">
+            <div class="video-play-overlay">
+              <div class="video-play-btn">▶</div>
+            </div>
+          </div>
+        </div>
+        <div class="video-frame-wrap" id="frame-${site.id}" style="display:none">
+          <iframe
+            id="iframe-${site.id}"
+            width="100%" height="200"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin">
+          </iframe>
+        </div>`;
+    } else {
+      // No video yet — coming soon card
+      card.innerHTML = `
+        <div class="audio-site-name">${site.name}</div>
+        <div class="audio-location">${site.location}</div>
+        <div class="audio-preview">${site.preview}</div>
+        <div class="video-coming-soon">▷ &nbsp;Video coming soon</div>`;
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+function loadVideo(siteId, videoId) {
+  // Hide thumbnail, show iframe
+  document.getElementById(`preview-${siteId}`).style.display = 'none';
+  const frameWrap = document.getElementById(`frame-${siteId}`);
+  const iframe = document.getElementById(`iframe-${siteId}`);
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  frameWrap.style.display = 'block';
+}
+
+renderAudioCards();
+
+// ═══════════════════════════════════════════
+// LIVE WEATHER — Open-Meteo (free, no API key)
+// ═══════════════════════════════════════════
+const WEATHER_STOPS = [
+  { city:'Athens',       dates:'7–9 Mar · Days 1–3',   lat:37.9715, lng:23.7257 },
+  { city:'Meteora',      dates:'10–11 Mar · Days 4–5',  lat:39.7074, lng:21.6211 },
+  { city:'Delphi',       dates:'12–13 Mar · Days 6–7',  lat:38.4783, lng:22.4950 },
+  { city:'Nafplio',      dates:'13–15 Mar · Days 7–9',  lat:37.5667, lng:22.7966 },
+  { city:'Cape Sounion', dates:'16 Mar · Day 10',        lat:37.6502, lng:24.0246 },
+];
+
+function wmoCond(code) {
+  if (code === 0) return { icon:'☀️', text:'Clear & Sunny' };
+  if (code <= 2)  return { icon:'🌤️', text:'Partly Cloudy' };
+  if (code <= 3)  return { icon:'☁️', text:'Overcast' };
+  if (code <= 48) return { icon:'🌫️', text:'Foggy' };
+  if (code <= 57) return { icon:'🌧️', text:'Drizzle' };
+  if (code <= 67) return { icon:'🌧️', text:'Rain' };
+  if (code <= 77) return { icon:'❄️', text:'Snow' };
+  if (code <= 82) return { icon:'🌦️', text:'Showers' };
+  if (code <= 99) return { icon:'⛈️', text:'Thunderstorm' };
+  return { icon:'🌡️', text:'Check forecast' };
+}
+
+function fToC(f) { return Math.round((f - 32) * 5/9); }
+
+async function fetchWeather() {
+  const grid = document.getElementById('weatherGrid');
+  const noteEl = document.getElementById('weatherNote');
+  try {
+    const results = await Promise.all(WEATHER_STOPS.map(stop =>
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${stop.lat}&longitude=${stop.lng}&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FAthens&forecast_days=3`)
+        .then(r => r.json())
+    ));
+
+    grid.innerHTML = '';
+    results.forEach((data, i) => {
+      const stop = WEATHER_STOPS[i];
+      const cur = data.current;
+      const daily = data.daily;
+      const cond = wmoCond(cur.weathercode);
+      const tempC = Math.round(cur.temperature_2m);
+      const maxC = Math.round(daily.temperature_2m_max[0]);
+      const minC = Math.round(daily.temperature_2m_min[0]);
+      const rain = daily.precipitation_probability_max[0];
+      const wind = Math.round(cur.windspeed_10m);
+      const humidity = Math.round(cur.relativehumidity_2m);
+
+      const card = document.createElement('div');
+      card.className = 'weather-card';
+      card.innerHTML = `
+        <div class="weather-city">${stop.city}</div>
+        <div class="weather-dates">${stop.dates}</div>
+        <span class="weather-icon">${cond.icon}</span>
+        <div class="weather-temp">${tempC}°C <span style="font-size:.9rem;color:var(--mist)">${minC}–${maxC}°</span></div>
+        <div class="weather-desc">${cond.text}</div>
+        <div class="weather-details">
+          <div class="weather-detail"><span>Rain</span>${rain}%</div>
+          <div class="weather-detail"><span>Wind</span>${wind} km/h</div>
+          <div class="weather-detail"><span>Humidity</span>${humidity}%</div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+    noteEl.textContent = `Live data from Open-Meteo · Last updated ${now} · March in Greece: mild days, cool evenings, pack a light waterproof`;
+  } catch(err) {
+    grid.innerHTML = '<p style="text-align:center;color:var(--mist);padding:2rem;grid-column:1/-1">Could not load live weather — check your connection</p>';
+  }
+}
+
+fetchWeather();
+
+// ═══════════════════════════════════════════
+// INTERACTIVE ITINERARY
+// ═══════════════════════════════════════════
+const DAYS = [
+  {
+    day:'Day 1', date:'Sat\n7 Mar', title:'Fly into Athens & Wander Plaka', transport:'',
+    preview:'Amsterdam → Athens. First glimpse of the city that invented democracy.',
+    desc:'Land at Athens International and take the Metro into the city. Check in to the Luwian Boutique Hotel and spend the evening wandering Plaka — Athens\' oldest neighbourhood, a labyrinth of neoclassical mansions, Byzantine churches and tavernas spilling onto cobbled streets beneath the floodlit Acropolis.',
+    highlights:['Take the X95 Express Bus or Metro Line 3 direct from the airport (40 min)', 'Plaka is best explored on foot — get lost in the backstreets', 'Grab dinner at Aerides or Scholarhio taverna nearby', 'The Acropolis is even more dramatic lit up at night from below'],
+    tags:['✈ Amsterdam → Athens|transport','🚇 Metro|transport','Luwian Boutique Hotel|hotel']
+  },
+  {
+    day:'Day 2', date:'Sun\n8 Mar', title:'Acropolis at Dawn & Anafiotika', transport:'🚶',
+    preview:'The great hill. Go at 8am — before the tour buses, in the golden light.',
+    desc:'Arrive at the Acropolis gates for 8am opening — the golden hour before the crowds. The Parthenon, Erechtheion and Propylaea in morning light is an experience that defines this trip. Afterwards, drift through Anafiotika, the enchanting Cycladic village built into the northern slope of the Acropolis rock by workers from the island of Anafi in the 1830s.',
+    highlights:['Book tickets online in advance at etickets.tap.gr — saves queuing', 'Wear proper shoes — the marble paths are slippery', 'Visit the Acropolis Museum at the base (open from 9am, €15)', 'Anafiotika: tiny whitewashed houses, cats, bougainvillea — pure magic'],
+    tags:['Acropolis (8am sharp — €30)|activity','Anafiotika|activity','Acropolis Museum (€15)|activity','Luwian Boutique Hotel|hotel']
+  },
+  {
+    day:'Day 3', date:'Mon\n9 Mar', title:'National Museum & Lycabettus Sunset', transport:'',
+    preview:'Five millennia under one roof. Then the city spread below you from Lycabettus.',
+    desc:'Spend the morning at the National Archaeological Museum — one of the world\'s greatest collections, home to the Mask of Agamemnon, the Antikythera Mechanism (the world\'s first computer, from 100 BC) and the bronze Zeus of Artemision. Allow at least three hours. Take the funicular or hike up Lycabettus Hill for a spectacular panoramic sunset over Athens.',
+    highlights:['Don\'t miss: Mask of Agamemnon, Room 4 — Bronze Zeus, Room 15 — Antikythera Mechanism, Room 38', 'Audio guide available at the museum entrance (recommended)', 'Lycabettus funicular runs from Kolonaki — or 20 min hike', 'Sunset from the top: the whole Attic plain, the Acropolis, the Saronic Gulf'],
+    tags:['National Museum (€12)|activity','Antikythera Mechanism|activity','Lycabettus Hill|activity','Luwian Boutique Hotel|hotel']
+  },
+  {
+    day:'Day 4', date:'Tue\n10 Mar', title:'Road to Meteora', transport:'🚗',
+    preview:'Pick up the car. Head north. Wait for the rocks to appear on the horizon.',
+    desc:'Pick up the hire car and head north on the E75 toward Thessaly. The 3.5-hour drive takes you through the Boeotian plain, past olive groves and vineyards, gradually climbing into the Thessalian heartland. Then — suddenly, impossibly — the great sandstone pillars of Meteora appear on the horizon, rising from the plain like something from another world. Check in and let it sink in.',
+    highlights:['Toll roads apply on E75 — have €15 in cash or a card ready', 'Stop at Lamia for coffee (halfway point)', 'Arrive late afternoon for golden-hour views of the rocks from Kalambaka', 'Elias Garden or Meteoron Panorama for dinner'],
+    tags:['🚗 Athens → Meteora (~3.5 hrs)|transport','Mirabilis Boutique Hotel|hotel']
+  },
+  {
+    day:'Day 5', date:'Wed\n11 Mar', title:'Full Day — Monasteries in the Sky', transport:'🚗',
+    preview:'Six monasteries. Vertical rock. Monks who climbed up and never came down.',
+    desc:'A full day among the monasteries of Meteora. Six still-active monasteries perch atop vertical sandstone pillars — a UNESCO World Heritage site of extraordinary spiritual power. Go at dawn for mist and solitude. Drive the circuit road later. The Great Meteoron is the largest; Varlaam has the finest frescoes; Roussanou sits on the narrowest pinnacle. Shoulders and knees must be covered to enter — sarongs available at the gates.',
+    highlights:['Dawn hike starts near the Hotel Doupiani House carpark — follow the red trail', 'Great Meteoron opens at 9am — arrive early, closes midday then reopens', 'Each monastery: €3 entry — bring cash', 'Varlaam: the fresco of The Last Judgement is astonishing', 'Driving the circuit road takes ~2 hrs with stops — do it clockwise'],
+    tags:['Great Meteoron Monastery (€3)|activity','Varlaam Monastery (€3)|activity','Roussanou Monastery|activity','Hiking Trails|activity','Mirabilis Boutique Hotel|hotel']
+  },
+  {
+    day:'Day 6', date:'Thu\n12 Mar', title:'Drive to Delphi — The Navel of the World', transport:'🚗',
+    preview:'Where the Oracle spoke. Where Apollo\'s temple said: Know Thyself.',
+    desc:'Two hours south through mountain scenery on the E65 to Delphi, dramatically set on the southern slope of Mount Parnassus at 570m above sea level. Explore the Sanctuary of Apollo, the Sacred Way lined with the competing treasuries of ancient city-states, the Temple of Apollo, the ancient theatre with its extraordinary views, and the mysterious Castalian Spring where pilgrims purified themselves before consulting the Oracle.',
+    highlights:['The Delphi site opens at 8am — go before the tour groups arrive at 10am', 'Walk the Sacred Way slowly — read the information boards', 'The view from the theatre is one of Greece\'s finest: down to the olive plain, to the sea', 'The Castalian Spring: still running, still cold, still sacred'],
+    tags:['🚗 Meteora → Delphi (~2 hrs)|transport','Temple of Apollo (€12 incl. museum)|activity','Castalian Spring|activity','Kastalia Boutique Hotel · €60|hotel']
+  },
+  {
+    day:'Day 7', date:'Fri\n13 Mar', title:'Morning Delphi → Drive to Nafplio', transport:'🚗',
+    preview:'The Bronze Charioteer. Then the coast road south to Greece\'s most beautiful town.',
+    desc:'Early morning at the Delphi Archaeological Museum — essential for understanding the site. See the famous Bronze Charioteer (circa 478 BC), the navel stone (omphalos) of the world, and the extraordinary Sphinx of Naxos. Then drive 2.5 hours south, crossing the Gulf of Corinth and entering the Peloponnese — a different Greece, older and wilder. Nafplio awaits: a Venetian-Ottoman jewel on the Argolic Gulf.',
+    highlights:['Museum opens 8am — be there before the site coaches arrive', 'The Bronze Charioteer\'s eyes (inlaid glass and stone) are haunting up close', 'Cross the Rio-Antirrio Bridge (€14 toll) — worth it for the views', 'Arrive Nafplio in time to walk the old town before dinner'],
+    tags:['Delphi Museum|activity','Bronze Charioteer|activity','🚗 Delphi → Nafplio (~2.5 hrs)|transport','Espero Royal Stay|hotel']
+  },
+  {
+    day:'Day 8', date:'Sat\n14 Mar', title:'Mycenae & Epidaurus Day Trips', transport:'🚗',
+    preview:'The Lion Gate. The golden masks. The most perfect acoustic in the ancient world.',
+    desc:'Day trips from Nafplio into the deep mythology of the Argolid. Mycenae (45 min drive) was the most powerful Bronze Age city in the Mediterranean — home to Agamemnon, where Schliemann discovered golden death masks in 1876. Then Epidaurus (45 min drive): the most perfectly preserved ancient theatre in the world, built around 340 BC, with acoustics so extraordinary that a coin dropped on the stage can be heard from the top row.',
+    highlights:['Mycenae: the Lion Gate is the oldest monumental sculpture in Europe', 'Don\'t miss the Treasury of Atreus (beehive tomb) — separate entrance nearby, included in ticket', 'Epidaurus: test the acoustics — drop a coin, clap once, whisper', 'Both sites are open 8am — do Mycenae first (cooler in the morning)'],
+    tags:['Mycenae (€20)|activity','Treasury of Atreus|activity','Epidaurus Theatre (€20)|activity','Espero Royal Stay (w/ breakfast)|hotel']
+  },
+  {
+    day:'Day 9', date:'Sun\n15 Mar', title:'Mystras Hike & Farewell Dinner', transport:'🚗',
+    preview:'A Byzantine ghost city on a hillside. Then wine and fish on the Nafplio harbour.',
+    desc:'Drive to the extraordinary ghost city of Mystras (1.5 hrs) — a Byzantine hillside town abandoned in 1832 where the whole of late medieval Greek civilisation ended. Frescoes still glow in ruined churches, the Palace of the Despots overlooks the whole Laconian plain, and philosopher George Gemistos Plethon once taught here. Return to Nafplio for your farewell dinner — order whatever came in fresh from the Argolic Gulf that day.',
+    highlights:['Mystras opens at 8am — two levels connected by paths, allow 2–3 hours', 'The Pantanassa Convent still has resident nuns — treat it with reverence', 'The Peribleptos Church has the finest Byzantine frescoes in mainland Greece', 'Farewell dinner recommendation: Pidalio Tavern — book ahead on a Saturday'],
+    tags:['Mystras Byzantine Ruins (€12)|activity','Pantanassa Convent|activity','Farewell Dinner — Nafplio|activity','Espero Royal Stay|hotel']
+  },
+  {
+    day:'Day 10', date:'Mon\n16 Mar', title:'Cape Sounion Coastal Drive', transport:'🚗',
+    preview:'The coastal road. Byron\'s temple above the Aegean. The perfect final chapter.',
+    desc:'The perfect closing chapter: a scenic coastal drive north along the Saronic Gulf — the Athens Riviera road, with the sea constantly to your right. Stop at any of the small beaches en route. Cape Sounion: the Temple of Poseidon stands on a cliff 60 metres above the Aegean, built around 444 BC. Lord Byron visited in 1810 and carved his name into a column — it\'s still there. Time your arrival to watch the sun descend into the sea.',
+    highlights:['The coastal road (via Ermioni and Galatas) is more scenic than the motorway', 'Arrive Sounion at least 1 hour before sunset (sunset ~6:40pm in mid-March)', 'The wind at Sounion is strong — bring a layer regardless of the temperature', 'Byron\'s inscription is on the lowest drum of the second column from the entrance'],
+    tags:['🚗 Nafplio → Sounion → Athens|transport','Temple of Poseidon (€10)|activity','Byron\'s inscription|activity']
+  },
+  {
+    day:'Day 11', date:'Tue\n17 Mar', title:'Fly Home', transport:'',
+    preview:'Athens International. Metro to the airport. Home.',
+    desc:'Take the Metro Line 3 direct from Syntagma or Monastiraki to Athens International Airport — about 40 minutes, trains every 30 minutes. Allow 2.5 hours before your flight for security and boarding. Carry home the weight of 2,500 years of history, the smell of thyme on mountain air, and the light of the Aegean.',
+    highlights:['Metro to airport: departs Monastiraki station — Platform 2', 'Journey: ~40 minutes, runs every 30 min', 'Ticket: €10 one way — buy at the station machine', 'You\'ve earned a coffee and a loukoumades at the airport'],
+    tags:['🚇 Metro to Airport (€10)|transport','✈ Athens → Amsterdam|transport']
+  }
+];
+
+function buildTimeline() {
+  const container = document.getElementById('timeline');
+  DAYS.forEach((d, i) => {
+    const isEven = i % 2 === 1;
+    const tagsHTML = d.tags.map(t => {
+      const [label, type] = t.split('|');
+      return `<span class="tag tag-${type}">${label}</span>`;
+    }).join('');
+    const highlightsHTML = d.highlights.map(h => `<li>${h}</li>`).join('');
+    const dateLines = d.date.split('\n');
+
+    const cardHTML = `
+      <div class="day-content" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-header-left">
+            <div class="day-number">${d.day} · ${dateLines[0]} ${dateLines[1]}</div>
+            <h3 class="day-title">${d.title}</h3>
+          </div>
+          <span class="day-chevron">▼</span>
+        </div>
+        <div class="day-preview">${d.preview}</div>
+        <div class="day-body">
+          <p class="day-desc">${d.desc}</p>
+          <ul class="day-highlights">${highlightsHTML}</ul>
+          <div class="day-tags">${tagsHTML}</div>
+        </div>
+      </div>`;
+
+    const nodeHTML = `
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">${dateLines[0]}<br>${dateLines[1]}</div>
+      </div>`;
+
+    const metaHTML = d.transport ? `<div class="day-meta"><span class="transport-icon">${d.transport}</span></div>` : '<div class="day-meta"></div>';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'day-card';
+    if (isEven) {
+      wrapper.innerHTML = metaHTML + nodeHTML + cardHTML;
+    } else {
+      wrapper.innerHTML = cardHTML + nodeHTML + metaHTML;
+    }
+    container.appendChild(wrapper);
+  });
+}
+
+function toggleDay(el) {
+  const isOpen = el.classList.contains('open');
+  // close all
+  document.querySelectorAll('.day-content.open').forEach(c => c.classList.remove('open'));
+  // open this one (unless it was already open)
+  if (!isOpen) el.classList.add('open');
+}
+
+buildTimeline();
+</script>
+</body>
+</html>
