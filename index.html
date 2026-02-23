@@ -6,8 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <title>Ελλάδα — Greece Road Trip March 2025</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" crossorigin="anonymous">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous"/>
+
 <style>
   :root {
     --bone: #f5f0e8;
@@ -26,7 +25,7 @@
 
   /* ── HERO ── */
   .hero {
-    min-height:100vh; background:var(--aegean);
+    min-height:55vh; background:var(--aegean);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     position:relative; overflow:hidden;
   }
@@ -40,11 +39,11 @@
   .hero-columns { position:absolute; bottom:0; left:0; right:0; height:180px; display:flex; align-items:flex-end; justify-content:center; opacity:.07; }
   .col-piece { width:2px; background:var(--gold); margin:0 30px; }
   .hero-content { text-align:center; z-index:1; padding:2rem; }
-  .hero-eyebrow { font-weight:400; letter-spacing:.4em; font-size:.7rem; color:var(--gold); text-transform:uppercase; margin-bottom:1.5rem; opacity:0; animation:fadeUp .8s ease forwards .2s; }
-  .hero-title { font-family:'Cinzel',serif; font-size:clamp(3rem,8vw,7rem); font-weight:400; color:var(--marble); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; opacity:0; animation:fadeUp .8s ease forwards .4s; }
-  .hero-subtitle { font-family:'Cormorant Garamond',serif; font-size:clamp(1.2rem,3vw,2rem); font-style:italic; color:rgba(248,245,240,.6); margin-bottom:2rem; opacity:0; animation:fadeUp .8s ease forwards .6s; }
-  .hero-dates { font-weight:400; letter-spacing:.3em; font-size:.75rem; color:var(--gold); text-transform:uppercase; opacity:0; animation:fadeUp .8s ease forwards .8s; }
-  .hero-route { position:absolute; bottom:2rem; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:.5rem; opacity:0; animation:fadeUp .8s ease forwards 1s; flex-wrap:wrap; padding:0 1rem; }
+  .hero-eyebrow { font-weight:400; letter-spacing:.4em; font-size:.65rem; color:var(--gold); text-transform:uppercase; margin-bottom:1rem; opacity:0; animation:fadeUp .8s ease forwards .2s; }
+  .hero-title { font-family:'Cinzel',serif; font-size:clamp(2rem,6vw,4.5rem); font-weight:400; color:var(--marble); line-height:.9; letter-spacing:.05em; margin-bottom:.4rem; opacity:0; animation:fadeUp .8s ease forwards .4s; }
+  .hero-subtitle { font-family:'Cormorant Garamond',serif; font-size:clamp(1rem,2.5vw,1.5rem); font-style:italic; color:rgba(248,245,240,.6); margin-bottom:1.25rem; opacity:0; animation:fadeUp .8s ease forwards .6s; }
+  .hero-dates { font-weight:400; letter-spacing:.3em; font-size:.7rem; color:var(--gold); text-transform:uppercase; opacity:0; animation:fadeUp .8s ease forwards .8s; }
+  .hero-route { position:absolute; bottom:1.25rem; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:.5rem; opacity:0; animation:fadeUp .8s ease forwards 1s; flex-wrap:wrap; padding:0 1rem; }
   .hero-route span { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(248,245,240,.4); }
   .hero-route .dot { width:3px; height:3px; border-radius:50%; background:var(--gold); opacity:.5; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
@@ -74,10 +73,12 @@
   #map-section .section-title { color:var(--marble); }
   #map-section .section-tag { color:var(--gold); }
   #map-section .section-divider { opacity:.4; }
-  #map-section p.map-note { color:rgba(248,245,240,.45); font-size:.75rem; text-align:center; margin-top:1rem; letter-spacing:.1em; }
-  #routeMap { height:520px; max-width:1100px; margin:0 auto; display:block; border:1px solid rgba(201,168,76,.2); }
-  .map-wrap { padding:0 2rem; }
-  .leaflet-popup-content-wrapper { background:var(--ink); border:1px solid rgba(201,168,76,.3); border-radius:0; box-shadow:0 8px 30px rgba(0,0,0,.4); }
+  .map-wrap { padding:0 2rem; max-width:1100px; margin:0 auto; }
+  .map-embed { width:100%; height:520px; border:1px solid rgba(201,168,76,.2); display:block; filter:saturate(0.9); }
+  .map-stops { display:flex; flex-wrap:wrap; justify-content:center; gap:.5rem 1.5rem; margin-top:1.5rem; padding:0 2rem; }
+  .map-stop { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(248,245,240,.45); display:flex; align-items:center; gap:.4rem; }
+  .map-stop::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  #map-section p.map-note { color:rgba(248,245,240,.3); font-size:.68rem; text-align:center; margin-top:1rem; letter-spacing:.08em; }
   .leaflet-popup-content { color:var(--marble); font-family:'Jost',sans-serif; font-size:.8rem; line-height:1.6; }
   .leaflet-popup-content strong { font-family:'Cinzel',serif; font-size:.85rem; color:var(--gold); display:block; margin-bottom:.25rem; }
   .leaflet-popup-tip { background:var(--ink); }
@@ -289,15 +290,133 @@
 
   footer { background:var(--ink); color:rgba(248,245,240,.35); text-align:center; padding:2rem; font-size:.68rem; letter-spacing:.2em; font-family:'Cinzel',serif; }
 
+  /* ══════════════════════════════════════════
+     MOBILE — complete responsive overhaul
+  ══════════════════════════════════════════ */
   @media(max-width:768px){
-    .timeline::before{display:none}
-    .day-card{grid-template-columns:1fr}
-    .day-card:nth-child(even) .day-content{grid-column:1}
-    .day-card:nth-child(even) .day-meta{grid-column:1;text-align:left;padding-right:0;padding-left:0}
-    .day-spacer{display:none}
-    .day-meta{padding-left:0;padding-top:.5rem}
-    .nav-links{display:none}
-    #routeMap{height:350px}
+
+    /* ── NAV ── */
+    .nav-links { display:none }
+    .nav-logo { font-size:.75rem }
+
+    /* ── HERO ── */
+    .hero-route { gap:.3rem }
+    .hero-route span { font-size:.55rem; letter-spacing:.1em }
+
+    /* ── BUDGET STRIP ── */
+    .budget-strip { gap:.75rem 1.5rem; padding:1rem }
+    .budget-value { font-size:1rem }
+
+    /* ── SECTION HEADERS ── */
+    section { padding:3rem 0 }
+    .section-header { margin-bottom:2rem }
+
+    /* ── MAP ── */
+    .map-embed { height:300px }
+    .map-wrap { padding:0 1rem }
+    .map-stops { padding:0 1rem; gap:.4rem 1rem }
+
+    /* ── WEATHER ── */
+    .weather-grid { grid-template-columns:repeat(2,1fr); gap:.75rem; padding:0 1rem }
+    .weather-temp { font-size:1.5rem }
+    .weather-icon { font-size:1.8rem }
+
+    /* ── TIMELINE — mobile reflow ── */
+    .timeline { padding:0 1rem }
+    .timeline::before { display:none }
+
+    /* Stack ALL cards into a single vertical list */
+    .day-card {
+      display:flex !important;
+      flex-direction:column !important;
+      grid-template-columns:unset !important;
+      margin-bottom:1rem;
+      position:relative;
+      padding-left:2rem;
+    }
+
+    /* Left border line replacing the centre timeline */
+    .day-card::before {
+      content:'';
+      position:absolute;
+      left:.55rem;
+      top:0; bottom:0;
+      width:1px;
+      background:linear-gradient(to bottom,rgba(201,168,76,.5),rgba(201,168,76,.1));
+    }
+
+    /* Hide transport emoji column — too cluttered on mobile */
+    .day-meta { display:none !important }
+
+    /* Node becomes a left-side dot */
+    .day-node {
+      position:absolute;
+      left:0;
+      top:1.5rem;
+      flex-direction:column;
+      align-items:center;
+      padding:0;
+      width:1.1rem;
+    }
+    .day-dot {
+      width:9px; height:9px;
+      box-shadow:0 0 0 2px var(--gold);
+    }
+    .day-date { display:none } /* hidden on mobile — date is in card header */
+
+    /* Card content full width */
+    .day-content {
+      width:100% !important;
+      grid-column:unset !important;
+      padding:1.1rem 1rem;
+    }
+
+    .day-title { font-size:1.1rem }
+    .day-number { font-size:.58rem }
+    .day-desc { font-size:.78rem }
+
+    /* Tags wrap tightly */
+    .day-tags { gap:.3rem }
+    .tag { font-size:.55rem; padding:.18rem .45rem }
+
+    /* Highlights list tighter */
+    .day-highlights li { font-size:.75rem; line-height:1.65 }
+
+    /* ── GALLERY ── */
+    .gallery-grid { grid-template-columns:repeat(2,1fr); gap:.6rem; padding:0 1rem }
+    .gallery-tabs { gap:.35rem; padding:0 1rem; margin-bottom:1.5rem }
+    .gallery-tab { font-size:.55rem; padding:.3rem .7rem }
+
+    /* ── VIDEO GUIDE ── */
+    .audio-grid { grid-template-columns:1fr; padding:0 1rem }
+    .audio-card { padding:1.25rem }
+    .audio-site-name { font-size:.88rem }
+
+    /* ── HOTELS ── */
+    .hotels-grid { grid-template-columns:1fr; padding:0 1rem }
+
+    /* ── RESTAURANTS ── */
+    .resto-grid { grid-template-columns:1fr; padding:0 1rem }
+    .resto-tabs { padding:0 1rem; gap:.35rem }
+    .resto-tab { font-size:.55rem; padding:.3rem .7rem }
+
+    /* ── PACKING ── */
+    .packing-grid { grid-template-columns:1fr; padding:0 1rem; gap:1.5rem }
+    .packing-progress { padding:0 1rem }
+
+    /* ── PRACTICAL ── */
+    .practical-grid { grid-template-columns:1fr; padding:0 1rem; gap:1.5rem }
+
+    /* ── FOOTER ── */
+    footer { font-size:.58rem; padding:1.5rem 1rem; letter-spacing:.1em }
+  }
+
+  /* Small phones */
+  @media(max-width:380px){
+    .weather-grid { grid-template-columns:1fr }
+    .gallery-grid { grid-template-columns:1fr }
+    .hero-title { font-size:3rem }
+    .budget-strip { flex-direction:column; gap:.5rem }
   }
 </style>
 </head>
@@ -360,18 +479,26 @@
 <section id="map-section">
   <div class="section-header">
     <span class="section-tag">Your Route</span>
-    <h2 class="section-title">Interactive Route Map</h2>
+    <h2 class="section-title">The Journey</h2>
     <div class="section-divider"></div>
   </div>
   <div class="map-wrap">
-    <div id="routeMap"></div>
-    <div class="map-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#c9a84c"></div>Hotels</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#c4622d"></div>Sites &amp; Attractions</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#6b7c4b"></div>Restaurants</div>
-    </div>
-    <p class="map-note">Click any marker for details · Route line shows driving path</p>
+    <iframe
+      class="map-embed"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps/embed?pb=!1m56!1m12!1m3!1d1629988.9979330512!2d21.27!3d38.2!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m41!3e0!4m5!1s0x14a1bd1f067043f1%3A0x2736354576668ddd!2sAthens%2C%20Greece!3m2!1d37.9838096!2d23.727538799999998!4m5!1s0x13598f04d4b49757%3A0x4e2d33d7f5c91f0f!2sAcropolis%20of%20Athens!3m2!1d37.9715323!2d23.7257492!4m5!1s0x135791e6f8e3e3ab%3A0x41e3a51f3f23a0f5!2sMeteora%2C%20Greece!3m2!1d39.7217319!2d21.6305836!4m5!1s0x135798c3e6bfffff%3A0xb07ce2f0c9f4a8b3!2sDelphi%2C%20Greece!3m2!1d38.4823786!2d22.5011218!4m5!1s0x14a01e8b9dd20c75%3A0x400bd2ce2b9c720!2sNafplio%2C%20Greece!3m2!1d37.5674987!2d22.7966395!4m5!1s0x14a04a7e6d9c9b47%3A0x1e96b9c18fe09ef9!2sCape%20Sounion%2C%20Greece!3m2!1d37.6494437!2d24.0251141!5e0!3m2!1sen!2snl!4v1708700000000!5m2!1sen!2snl">
+    </iframe>
   </div>
+  <div class="map-stops">
+    <div class="map-stop">Athens · Days 1–3</div>
+    <div class="map-stop">Meteora · Days 4–5</div>
+    <div class="map-stop">Delphi · Days 6–7</div>
+    <div class="map-stop">Nafplio · Days 7–9</div>
+    <div class="map-stop">Cape Sounion · Day 10</div>
+  </div>
+  <p class="map-note">Open in Google Maps for turn-by-turn directions</p>
 </section>
 
 <!-- WEATHER -->
@@ -716,74 +843,6 @@
 <footer>ΕΛΛΆΔΑ 2025 &nbsp;·&nbsp; Amsterdam → Athens → Meteora → Delphi → Nafplio → Sounion → Home</footer>
 
 <script>
-// ═══════════════════════════════════════════
-// LOAD LEAFLET THEN INIT MAP
-// ═══════════════════════════════════════════
-function initMap() {
-  const map = L.map('routeMap', { zoomControl:true }).setView([38.5, 22.5], 6);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution:'© OpenStreetMap © CARTO', subdomains:'abcd', maxZoom:19
-  }).addTo(map);
-
-  const hotelIcon = L.divIcon({ className:'', html:'<div style="width:14px;height:14px;border-radius:50%;background:#c9a84c;border:2px solid #f5f0e8;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>', iconSize:[14,14], iconAnchor:[7,7] });
-  const siteIcon  = L.divIcon({ className:'', html:'<div style="width:12px;height:12px;border-radius:50%;background:#c4622d;border:2px solid #f5f0e8;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>', iconSize:[12,12], iconAnchor:[6,6] });
-  const restoIcon = L.divIcon({ className:'', html:'<div style="width:10px;height:10px;border-radius:50%;background:#6b7c4b;border:2px solid #f5f0e8;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>', iconSize:[10,10], iconAnchor:[5,5] });
-
-  const markers = [
-    { lat:37.9834, lng:23.7262, icon:hotelIcon, title:'Luwian Boutique Hotel',          desc:'Your Athens base · 3 nights · Steps from Plaka & Acropolis' },
-    { lat:37.9715, lng:23.7257, icon:siteIcon,  title:'Acropolis of Athens',             desc:'Day 2 · Go at 8am · Book tickets in advance · €30' },
-    { lat:37.9860, lng:23.7326, icon:siteIcon,  title:'National Archaeological Museum',  desc:'Day 3 · Mask of Agamemnon · Antikythera Mechanism · €12' },
-    { lat:39.7217, lng:21.6306, icon:siteIcon,  title:'Meteora Monasteries',             desc:'Days 4–5 · UNESCO World Heritage · Go at dawn for mist' },
-    { lat:39.6971, lng:21.6211, icon:hotelIcon, title:'Mirabilis Boutique Hotel',        desc:'2 nights · Direct Meteora views · Rated 4.9/5' },
-    { lat:38.4824, lng:22.5011, icon:siteIcon,  title:'Delphi — Oracle of Apollo',       desc:'Day 6 · Temple of Apollo · Sacred Way · €12' },
-    { lat:38.4783, lng:22.4950, icon:hotelIcon, title:'Kastalia Boutique Hotel',         desc:'1 night · 10 min walk from site · €60/night' },
-    { lat:37.5667, lng:22.7966, icon:hotelIcon, title:'Espero Royal Stay',               desc:'3 nights · 50m from Nafplio harbour · Breakfast included' },
-    { lat:37.7309, lng:22.7561, icon:siteIcon,  title:'Ancient Mycenae',                 desc:'Day 8 · Lion Gate · Treasury of Atreus · €20' },
-    { lat:37.5961, lng:23.0793, icon:siteIcon,  title:'Theatre of Epidaurus',            desc:'Day 8 · Best preserved ancient theatre · €20' },
-    { lat:37.1050, lng:22.4300, icon:siteIcon,  title:'Mystras',                         desc:'Day 9 · Byzantine ghost city · Glowing frescoes · €12' },
-    { lat:37.6502, lng:24.0246, icon:siteIcon,  title:'Temple of Poseidon, Sounion',     desc:'Day 10 · Byron carved his name here · Sunset · €10' },
-    { lat:37.9724, lng:23.7293, icon:restoIcon, title:'Scholarhio, Athens',              desc:'Classic ouzeri · Fixed menu €20pp · Closed Tuesdays' },
-    { lat:37.9745, lng:23.7280, icon:restoIcon, title:'Aerides Plaka, Athens',           desc:'Best taverna in Plaka · Grilled octopus · 4.7★' },
-    { lat:39.7075, lng:21.6211, icon:restoIcon, title:'Elias Garden, Meteora',           desc:'Best meal in Meteora · Homemade pasta · Live music' },
-    { lat:37.5648, lng:22.8061, icon:restoIcon, title:'Pidalio Tavern, Nafplio',         desc:'Finest in Nafplio · Farewell dinner pick · 4.7★' },
-    { lat:37.5672, lng:22.7982, icon:restoIcon, title:'The Nest, Nafplio',               desc:'Seafood · Harbour views · Shrimp saganaki · 4.6★' },
-  ];
-
-  markers.forEach(m => {
-    L.marker([m.lat, m.lng], { icon: m.icon }).addTo(map)
-      .bindPopup(`<strong>${m.title}</strong>${m.desc}`);
-  });
-
-  L.polyline([
-    [37.9715, 23.7257],
-    [39.7217, 21.6306],
-    [38.4824, 22.5011],
-    [37.5667, 22.7966],
-    [37.6502, 24.0246],
-    [37.9715, 23.7257],
-  ], { color:'rgba(201,168,76,0.6)', weight:2, dashArray:'6,8' }).addTo(map);
-}
-
-// Dynamically load Leaflet JS then init
-(function loadLeaflet() {
-  const s = document.createElement('script');
-  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-  s.crossOrigin = 'anonymous';
-  s.onload = initMap;
-  s.onerror = () => {
-    // Try fallback CDN
-    const s2 = document.createElement('script');
-    s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
-    s2.crossOrigin = 'anonymous';
-    s2.onload = initMap;
-    s2.onerror = () => {
-      document.getElementById('routeMap').innerHTML = '<p style="text-align:center;color:var(--mist);padding:3rem;font-family:Jost,sans-serif">Map unavailable — check your connection</p>';
-    };
-    document.head.appendChild(s2);
-  };
-  document.head.appendChild(s);
-})();
-
 // ═══════════════════════════════════════════
 // GALLERY
 // ═══════════════════════════════════════════
@@ -1199,12 +1258,18 @@ function buildTimeline() {
         <div class="day-date">${dateLines[0]}<br>${dateLines[1]}</div>
       </div>`;
 
-    const metaHTML = d.transport ? `<div class="day-meta"><span class="transport-icon">${d.transport}</span></div>` : '<div class="day-meta"></div>';
+    // Transport icon — only shown on desktop via CSS
+    const metaHTML = `<div class="day-meta">${d.transport ? `<span class="transport-icon">${d.transport}</span>` : ''}</div>`;
 
     const wrapper = document.createElement('div');
     wrapper.className = 'day-card';
+
+    // On desktop: even cards flip (meta | node | card), odd: (card | node | meta)
+    // On mobile: CSS overrides to always show card full width, node as left dot
     if (isEven) {
       wrapper.innerHTML = metaHTML + nodeHTML + cardHTML;
+      // Mark even so CSS grid knows which column the card goes in
+      wrapper.dataset.even = 'true';
     } else {
       wrapper.innerHTML = cardHTML + nodeHTML + metaHTML;
     }
@@ -1214,10 +1279,14 @@ function buildTimeline() {
 
 function toggleDay(el) {
   const isOpen = el.classList.contains('open');
-  // close all
   document.querySelectorAll('.day-content.open').forEach(c => c.classList.remove('open'));
-  // open this one (unless it was already open)
-  if (!isOpen) el.classList.add('open');
+  if (!isOpen) {
+    el.classList.add('open');
+    // Smooth scroll card into view on mobile
+    if (window.innerWidth <= 768) {
+      setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'nearest' }), 50);
+    }
+  }
 }
 
 buildTimeline();
