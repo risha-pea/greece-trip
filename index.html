@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ελλάδα — Greece Road Trip March 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bone: #f5f0e8;
+    --sand: #e8dcc8;
+    --terracotta: #c4622d;
+    --terracotta-light: #d4784a;
+    --olive: #6b7c4b;
+    --aegean: #1a4a6b;
+    --aegean-light: #2a6a9b;
+    --marble: #f8f5f0;
+    --ink: #1a1510;
+    --gold: #c9a84c;
+    --mist: #8a9aa8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bone);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--aegean);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(196,98,45,0.1) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Decorative column lines */
+  .hero-columns {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+    opacity: 0.07;
+  }
+  .col-piece {
+    width: 2px;
+    background: var(--gold);
+    margin: 0 30px;
+  }
+
+  .hero-content {
+    text-align: center;
+    z-index: 1;
+    padding: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    font-size: 0.7rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 400;
+    color: var(--marble);
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    color: rgba(248,245,240,0.6);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-dates {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    font-size: 0.75rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .hero-route {
+    position: absolute;
+    bottom: 2rem;
+    left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+  .hero-route span {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(248,245,240,0.4);
+  }
+  .hero-route .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0.5; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(26,26,16,0.97);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(248,245,240,0.5);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* SECTION LAYOUTS */
+  section { padding: 5rem 0; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding: 0 2rem;
+  }
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    color: var(--aegean);
+    line-height: 1.1;
+  }
+  .section-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto 0;
+    opacity: 0.6;
+  }
+
+  /* ITINERARY TIMELINE */
+  #itinerary { background: var(--marble); }
+
+  .timeline {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold) 5%, var(--gold) 95%, transparent);
+    opacity: 0.3;
+    transform: translateX(-50%);
+  }
+
+  .day-card {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    align-items: start;
+  }
+
+  .day-card:nth-child(even) .day-content { grid-column: 3; }
+  .day-card:nth-child(even) .day-spacer { grid-column: 2; }
+  .day-card:nth-child(even) .day-meta { grid-column: 1; text-align: right; }
+
+  .day-content {
+    background: white;
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 1.5rem;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .day-content:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(26,74,107,0.1);
+  }
+
+  .day-number {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .day-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--aegean);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .day-desc {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .day-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0;
+    font-weight: 500;
+  }
+  .tag-transport { background: rgba(26,74,107,0.08); color: var(--aegean); }
+  .tag-hotel { background: rgba(201,168,76,0.12); color: #7a6020; }
+  .tag-activity { background: rgba(107,124,75,0.1); color: var(--olive); }
+
+  .day-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .day-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--marble);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+  .day-date {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--mist);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .day-meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 1.5rem;
+    padding-left: 1.5rem;
+  }
+  .day-card:nth-child(even) .day-meta { padding-left: 0; padding-right: 1.5rem; }
+
+  .hotel-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 0.3rem 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .transport-icon { font-size: 1.2rem; margin-bottom: 0.3rem; }
+
+  /* AUDIO GUIDE */
+  #audio-guide { background: var(--aegean); color: var(--marble); }
+  #audio-guide .section-title { color: var(--marble); }
+
+  .audio-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .audio-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 1.75rem;
+    transition: background 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .audio-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .audio-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-3px); }
+  .audio-card:hover::before { opacity: 1; }
+
+  .audio-site-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.05em;
+  }
+  .audio-location {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(248,245,240,0.35);
+    margin-bottom: 1rem;
+  }
+  .audio-preview {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: rgba(248,245,240,0.65);
+    margin-bottom: 1.25rem;
+    min-height: 60px;
+  }
+
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.4);
+    background: transparent;
+    color: var(--gold);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .play-btn:hover { background: rgba(201,168,76,0.15); transform: scale(1.05); }
+  .play-btn.loading { opacity: 0.6; cursor: wait; }
+  .play-btn.playing { background: rgba(201,168,76,0.2); }
+
+  .audio-progress-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .audio-status {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(248,245,240,0.4);
+  }
+  .audio-bar {
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+    cursor: pointer;
+  }
+  .audio-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  .generate-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--gold);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 0.75rem;
+  }
+  .generate-btn:hover { background: rgba(201,168,76,0.1); }
+  .generate-btn:disabled { opacity: 0.4; cursor: wait; }
+
+  .audio-text-display {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: rgba(248,245,240,0.7);
+    border-left: 2px solid rgba(201,168,76,0.3);
+    padding-left: 1rem;
+    display: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  /* HOTELS */
+  #hotels { background: var(--bone); }
+
+  .hotels-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .hotel-card {
+    background: white;
+    border: 1px solid rgba(201,168,76,0.15);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .hotel-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(26,74,107,0.12); }
+
+  .hotel-header {
+    background: var(--aegean);
+    padding: 1.5rem;
+    position: relative;
+  }
+  .hotel-nights {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: rgba(201,168,76,0.25);
+    color: var(--gold);
+    padding: 0.25rem 0.5rem;
+  }
+  .hotel-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--marble);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .hotel-city {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(248,245,240,0.4);
+  }
+  .hotel-body { padding: 1.25rem; }
+  .hotel-stars { color: var(--gold); font-size: 0.7rem; margin-bottom: 0.75rem; }
+  .hotel-review {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1rem;
+    border-left: 2px solid rgba(201,168,76,0.3);
+    padding-left: 0.75rem;
+  }
+  .hotel-detail {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--mist);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  /* RESTAURANTS */
+  #restaurants { background: var(--marble); }
+  .restaurants-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .resto-card {
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding-bottom: 1.5rem;
+    padding-top: 0.25rem;
+  }
+  .resto-location {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.5rem;
+  }
+  .resto-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--aegean);
+    margin-bottom: 0.25rem;
+  }
+  .resto-type {
+    font-size: 0.7rem;
+    color: var(--mist);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+  .resto-desc {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #555;
+  }
+
+  /* MAP SECTION */
+  #map-section { background: var(--aegean); }
+
+  /* PRACTICAL */
+  #practical { background: #f0ece4; }
+  .practical-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+  .practical-card { }
+  .practical-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .practical-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--aegean);
+    margin-bottom: 0.75rem;
+  }
+  .practical-items { list-style: none; }
+  .practical-items li {
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: #555;
+    padding-left: 0.75rem;
+    position: relative;
+  }
+  .practical-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(248,245,240,0.4);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    font-family: 'Cinzel', serif;
+  }
+
+  /* BUDGET STRIP */
+  .budget-strip {
+    background: var(--terracotta);
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem 4rem;
+  }
+  .budget-item { text-align: center; }
+  .budget-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .budget-value {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: white;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .timeline::before { display: none; }
+    .day-card {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .day-card:nth-child(even) .day-content { grid-column: 1; }
+    .day-card:nth-child(even) .day-meta { grid-column: 1; text-align: left; padding-right: 0; padding-left: 0; }
+    .day-spacer { display: none; }
+    .day-meta { padding-left: 0; padding-top: 0.5rem; }
+    .nav-links { display: none; }
+  }
+
+  /* Loading spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(201,168,76,0.3);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-columns">
+    <div class="col-piece" style="height:160px"></div>
+    <div class="col-piece" style="height:120px"></div>
+    <div class="col-piece" style="height:180px"></div>
+    <div class="col-piece" style="height:100px"></div>
+    <div class="col-piece" style="height:160px"></div>
+    <div class="col-piece" style="height:140px"></div>
+    <div class="col-piece" style="height:120px"></div>
+    <div class="col-piece" style="height:170px"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">An Odyssey Through Ancient Greece</p>
+    <h1 class="hero-title">ΕΛΛΆΔΑ</h1>
+    <p class="hero-subtitle">Athens · Meteora · Delphi · Nafplio</p>
+    <p class="hero-dates">7 — 17 March 2025 &nbsp;·&nbsp; 11 Days</p>
+  </div>
+  <div class="hero-route">
+    <span>Amsterdam</span>
+    <div class="dot"></div>
+    <span>Athens</span>
+    <div class="dot"></div>
+    <span>Meteora</span>
+    <div class="dot"></div>
+    <span>Delphi</span>
+    <div class="dot"></div>
+    <span>Nafplio</span>
+    <div class="dot"></div>
+    <span>Sounion</span>
+    <div class="dot"></div>
+    <span>Home</span>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ΕΛΛΆΔΑ 2025</div>
+  <ul class="nav-links">
+    <li><a href="#itinerary">Itinerary</a></li>
+    <li><a href="#audio-guide">Audio Guide</a></li>
+    <li><a href="#hotels">Hotels</a></li>
+    <li><a href="#restaurants">Restaurants</a></li>
+    <li><a href="#practical">Practical</a></li>
+  </ul>
+</nav>
+
+<!-- BUDGET STRIP -->
+<div class="budget-strip">
+  <div class="budget-item">
+    <span class="budget-label">Hotel Budget (excl. Athens)</span>
+    <span class="budget-value">~€735</span>
+  </div>
+  <div class="budget-item">
+    <span class="budget-label">Duration</span>
+    <span class="budget-value">11 Days</span>
+  </div>
+  <div class="budget-item">
+    <span class="budget-label">Km Driven</span>
+    <span class="budget-value">~650 km</span>
+  </div>
+  <div class="budget-item">
+    <span class="budget-label">Ancient Sites</span>
+    <span class="budget-value">8+</span>
+  </div>
+  <div class="budget-item">
+    <span class="budget-label">Transport</span>
+    <span class="budget-value">✈ + 🚗</span>
+  </div>
+</div>
+
+<!-- ITINERARY -->
+<section id="itinerary">
+  <div class="section-header">
+    <span class="section-tag">Day by Day</span>
+    <h2 class="section-title">The Itinerary</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="timeline">
+
+    <div class="day-card">
+      <div class="day-content">
+        <div class="day-number">Day 1 · Saturday, 7 March</div>
+        <h3 class="day-title">Fly into Athens &amp; Wander Plaka</h3>
+        <p class="day-desc">Land at Athens International and take the Metro into the city. Check in to the Luwian Boutique Hotel and spend the evening wandering Plaka — Athens' oldest neighbourhood, a labyrinth of neoclassical mansions, Byzantine churches and tavernas spilling onto cobbled streets.</p>
+        <div class="day-tags">
+          <span class="tag tag-transport">✈ Amsterdam → Athens</span>
+          <span class="tag tag-transport">🚇 Metro</span>
+          <span class="tag tag-hotel">Luwian Boutique Hotel</span>
+        </div>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Sat<br>7 Mar</div>
+      </div>
+      <div class="day-meta"></div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-meta">
+        <span class="transport-icon">🚶</span>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Sun<br>8 Mar</div>
+      </div>
+      <div class="day-content">
+        <div class="day-number">Day 2 · Sunday, 8 March</div>
+        <h3 class="day-title">Acropolis at Dawn &amp; Anafiotika</h3>
+        <p class="day-desc">Arrive at the Acropolis gates for 8am — the golden hour before the crowds. The Parthenon, Erechtheion and Propylaea in morning light is an experience that will define this trip. Afterwards, drift through Anafiotika, a tiny Cycladic village-within-Athens clinging to the Acropolis rock.</p>
+        <div class="day-tags">
+          <span class="tag tag-activity">Acropolis (8am sharp)</span>
+          <span class="tag tag-activity">Anafiotika</span>
+          <span class="tag tag-hotel">Luwian Boutique Hotel</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-content">
+        <div class="day-number">Day 3 · Monday, 9 March</div>
+        <h3 class="day-title">National Museum &amp; Lycabettus Sunset</h3>
+        <p class="day-desc">Spend the morning in the National Archaeological Museum — home to the Mask of Agamemnon, the Antikythera Mechanism and treasures spanning 5,000 years of Greek civilisation. Take the funicular or hike up Lycabettus Hill for a panoramic Athens sunset.</p>
+        <div class="day-tags">
+          <span class="tag tag-activity">National Archaeological Museum</span>
+          <span class="tag tag-activity">Lycabettus Hill</span>
+          <span class="tag tag-hotel">Luwian Boutique Hotel</span>
+        </div>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Mon<br>9 Mar</div>
+      </div>
+      <div class="day-meta"></div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-meta">
+        <span class="transport-icon">🚗</span>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Tue<br>10 Mar</div>
+      </div>
+      <div class="day-content">
+        <div class="day-number">Day 4 · Tuesday, 10 March</div>
+        <h3 class="day-title">Road to Meteora</h3>
+        <p class="day-desc">Pick up the hire car in Athens and head north on the E75 toward Thessaly. The 3.5-hour drive gradually reveals the Thessalian plain, then suddenly — impossibly — the great rock pillars of Meteora appear on the horizon. Check in and let it sink in.</p>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚗 Athens → Meteora (~3.5 hrs)</span>
+          <span class="tag tag-hotel">Mirabilis Boutique Hotel</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-content">
+        <div class="day-number">Day 5 · Wednesday, 11 March</div>
+        <h3 class="day-title">Monasteries in the Sky</h3>
+        <p class="day-desc">A full day among the monasteries of Meteora. Six still-active monasteries perch atop vertical rock pillars — a UNESCO World Heritage site of extraordinary spiritual power. Hike between them at dawn for mist-wrapped views, then drive the circuit road for different perspectives. Dress modestly to enter.</p>
+        <div class="day-tags">
+          <span class="tag tag-activity">Great Meteoron Monastery</span>
+          <span class="tag tag-activity">Varlaam Monastery</span>
+          <span class="tag tag-activity">Hiking trails</span>
+          <span class="tag tag-hotel">Mirabilis Boutique Hotel</span>
+        </div>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Wed<br>11 Mar</div>
+      </div>
+      <div class="day-meta"></div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-meta">
+        <span class="transport-icon">🚗</span>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Thu<br>12 Mar</div>
+      </div>
+      <div class="day-content">
+        <div class="day-number">Day 6 · Thursday, 12 March</div>
+        <h3 class="day-title">Drive to Delphi — The Navel of the World</h3>
+        <p class="day-desc">Two hours south through mountain scenery to Delphi, dramatically set on the slopes of Mount Parnassus. Explore the Sanctuary of Apollo, the Treasury of the Athenians, the Sacred Way, the ancient theatre with its extraordinary views and the mysterious Castalian Spring. The Oracle awaits.</p>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚗 Meteora → Delphi (~2 hrs)</span>
+          <span class="tag tag-activity">Temple of Apollo</span>
+          <span class="tag tag-activity">Castalian Spring</span>
+          <span class="tag tag-hotel">Kastalia Boutique Hotel · €60/night</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-content">
+        <div class="day-number">Day 7 · Friday, 13 March</div>
+        <h3 class="day-title">Morning Delphi → Onward to Nafplio</h3>
+        <p class="day-desc">An early morning at the Delphi Museum — essential for understanding the site's treasures including the famous Bronze Charioteer. Then drive 2.5 hours through the Gulf of Corinth coast to Nafplio, Greece's most romantic town: an Ottoman-Venetian jewel on the Argolic Gulf.</p>
+        <div class="day-tags">
+          <span class="tag tag-activity">Delphi Museum</span>
+          <span class="tag tag-transport">🚗 Delphi → Nafplio (~2.5 hrs)</span>
+          <span class="tag tag-hotel">Espero Royal Stay</span>
+        </div>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Fri<br>13 Mar</div>
+      </div>
+      <div class="day-meta"></div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-meta">
+        <span class="transport-icon">🚗</span>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Sat<br>14 Mar</div>
+      </div>
+      <div class="day-content">
+        <div class="day-number">Day 8 · Saturday, 14 March</div>
+        <h3 class="day-title">Mycenae &amp; Epidaurus</h3>
+        <p class="day-desc">Day trips into deep mythology. Mycenae — the city of Agamemnon, of the Trojan War, home to the Lion Gate and the Treasury of Atreus — is just 45 minutes away. Then on to Epidaurus: the most perfectly preserved ancient theatre in the world. Test the legendary acoustics by whispering from the stage.</p>
+        <div class="day-tags">
+          <span class="tag tag-activity">Mycenae — Lion Gate</span>
+          <span class="tag tag-activity">Epidaurus Theatre</span>
+          <span class="tag tag-hotel">Espero Royal Stay (w/ breakfast)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-content">
+        <div class="day-number">Day 9 · Sunday, 15 March</div>
+        <h3 class="day-title">Mystras Hike &amp; Farewell Dinner</h3>
+        <p class="day-desc">Drive to the ghost city of Mystras — a Byzantine ghost town where a whole civilisation ended, frescoes still glowing in ruined churches on a Peloponnese hillside. Hike through its layers of history. Return to Nafplio for a proper farewell dinner on the waterfront. Order the fresh catch and local Nemean wine.</p>
+        <div class="day-tags">
+          <span class="tag tag-activity">Mystras Byzantine Ruins</span>
+          <span class="tag tag-activity">Farewell Dinner, Nafplio</span>
+          <span class="tag tag-hotel">Espero Royal Stay · €221</span>
+        </div>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Sun<br>15 Mar</div>
+      </div>
+      <div class="day-meta"></div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-meta">
+        <span class="transport-icon">🚗</span>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Mon<br>16 Mar</div>
+      </div>
+      <div class="day-content">
+        <div class="day-number">Day 10 · Monday, 16 March</div>
+        <h3 class="day-title">Cape Sounion Coastal Drive</h3>
+        <p class="day-desc">The perfect closing chapter: a scenic coastal drive up the Saronic Gulf to Cape Sounion, where the Temple of Poseidon stands on a cliff 60 metres above the Aegean. Byron carved his name into the marble. Time your arrival for late afternoon light. Drop the car in Athens and savour the last evening.</p>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚗 Nafplio → Sounion → Athens</span>
+          <span class="tag tag-activity">Temple of Poseidon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-content">
+        <div class="day-number">Day 11 · Tuesday, 17 March</div>
+        <h3 class="day-title">Fly Home</h3>
+        <p class="day-desc">Take the Metro to Athens International Airport. Carry home the weight of 2,500 years of history, the smell of thyme on mountain air, and the light of the Aegean.</p>
+        <div class="day-tags">
+          <span class="tag tag-transport">🚇 Metro to Airport</span>
+          <span class="tag tag-transport">✈ Athens → Amsterdam</span>
+        </div>
+      </div>
+      <div class="day-node">
+        <div class="day-dot"></div>
+        <div class="day-date">Tue<br>17 Mar</div>
+      </div>
+      <div class="day-meta"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AUDIO GUIDE -->
+<section id="audio-guide">
+  <div class="section-header">
+    <span class="section-tag" style="color:var(--gold)">Stand Here. Press Play.</span>
+    <h2 class="section-title">Audio Guide</h2>
+    <div class="section-divider"></div>
+    <p style="color:rgba(248,245,240,0.5); font-size:0.8rem; margin-top:1rem; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;">AI-narrated guides for every major site on your route. Press generate, then play — and listen as you stand among the ruins.</p>
+  </div>
+  <div class="audio-grid" id="audioGrid"></div>
+</section>
+
+<!-- HOTELS -->
+<section id="hotels">
+  <div class="section-header">
+    <span class="section-tag">Where You'll Sleep</span>
+    <h2 class="section-title">Hotels</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="hotels-grid">
+
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">3 Nights · Days 1–3</span>
+        <div class="hotel-name">Luwian Boutique Hotel</div>
+        <div class="hotel-city">Athens, Plaka</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★☆ &nbsp; 4.7 / 5</div>
+        <p class="hotel-review">"The staff demonstrated outstanding professionalism... rooms are incredibly spacious and everything feels brand new."</p>
+        <div class="hotel-detail">📍 P. Tsaldari 10, Athens</div>
+        <div class="hotel-detail">🚇 Short walk from Omonia Metro</div>
+        <div class="hotel-detail">✓ Near Acropolis & Plaka</div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">2 Nights · Days 4–5</span>
+        <div class="hotel-name">Mirabilis Boutique Hotel</div>
+        <div class="hotel-city">Meteora, Kalambaka</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★★ &nbsp; 4.9 / 5</div>
+        <p class="hotel-review">"Mesmerizing view to Meteora rocks. Private deck with breathtaking mountain views... felt welcomed from the moment we arrived."</p>
+        <div class="hotel-detail">📍 Vitoima Terma, Kalambaka</div>
+        <div class="hotel-detail">🏔 Direct Meteora rock views</div>
+        <div class="hotel-detail">✓ Buffet + made-to-order breakfast</div>
+        <div class="hotel-detail">💶 ~€150/night</div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">1 Night · Day 6</span>
+        <div class="hotel-name">Kastalia Boutique Hotel</div>
+        <div class="hotel-city">Delphi</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★☆ &nbsp; 4.3 / 5</div>
+        <p class="hotel-review">"Breakfast on the terrace offers a superb view. Just 10 minutes from the ancient site. Excellent location and value."</p>
+        <div class="hotel-detail">📍 Vasileos Pavlou, Delphi</div>
+        <div class="hotel-detail">🏛 10 min walk to Oracle site</div>
+        <div class="hotel-detail">✓ Terrace with valley views</div>
+        <div class="hotel-detail">💶 €60/night</div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-header">
+        <span class="hotel-nights">3 Nights · Days 7–9</span>
+        <div class="hotel-name">Espero Royal Stay</div>
+        <div class="hotel-city">Nafplio</div>
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-stars">★★★★★ &nbsp; 4.8 / 5</div>
+        <p class="hotel-review">"Perfect location near the harbour. Very stylish decor, great lighting, big balcony. 50m from Syntagma Square."</p>
+        <div class="hotel-detail">📍 Dim. Ipsilanti 10, Nafplio</div>
+        <div class="hotel-detail">⚓ 50m from the harbour</div>
+        <div class="hotel-detail">✓ Breakfast included</div>
+        <div class="hotel-detail">💶 ~€221 total (3 nights)</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESTAURANTS -->
+<section id="restaurants">
+  <div class="section-header">
+    <span class="section-tag">Where to Eat</span>
+    <h2 class="section-title">Restaurants &amp; Tavernas</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="restaurants-grid">
+    <div class="resto-card">
+      <div class="resto-location">Athens · Plaka</div>
+      <div class="resto-name">Scholarchio</div>
+      <div class="resto-type">Traditional Ouzeri &amp; Mezedopoleio</div>
+      <p class="resto-desc">Hidden in a Plaka courtyard, this classic ouzeri serves dozens of small mezedes — grilled octopus, taramosalata, spanakopita, saganaki. Order the house ouzo and share everything. A true Athens institution.</p>
+    </div>
+    <div class="resto-card">
+      <div class="resto-location">Athens · Monastiraki</div>
+      <div class="resto-name">Tzitzikas ke Mermigas</div>
+      <div class="resto-type">Modern Greek, Creative Mezedes</div>
+      <p class="resto-desc">Cheerful, colourful restaurant serving inventive takes on Greek classics. The sun-dried tomato feta dip and the slow-cooked lamb are unmissable. Ideal before or after the Acropolis.</p>
+    </div>
+    <div class="resto-card">
+      <div class="resto-location">Meteora · Kalambaka</div>
+      <div class="resto-name">Taverna Panellinio</div>
+      <div class="resto-type">Mountain Taverna, Local Produce</div>
+      <p class="resto-desc">At the foot of the rocks, this family taverna has been feeding pilgrims and travellers for decades. The grilled lamb chops with mountain herbs and local trahanas soup are exceptional after a day of hiking.</p>
+    </div>
+    <div class="resto-card">
+      <div class="resto-location">Delphi</div>
+      <div class="resto-name">Taverna Dion</div>
+      <div class="resto-type">Greek Taverna, Valley Views</div>
+      <p class="resto-desc">10 minutes from the ancient site with views down the olive-studded valley toward the Gulf of Corinth. The souvlaki and local Fokida wine are the ideal end to a day communing with Apollo.</p>
+    </div>
+    <div class="resto-card">
+      <div class="resto-location">Nafplio</div>
+      <div class="resto-name">Aiolos</div>
+      <div class="resto-type">Seafood &amp; Peloponnese Cuisine</div>
+      <p class="resto-desc">On the old harbour waterfront with views of Bourtzi Castle. Order whatever fresh fish came in that day, paired with Nemean Agiorgitiko — the great red wine of the Peloponnese. Linger here for your farewell dinner.</p>
+    </div>
+    <div class="resto-card">
+      <div class="resto-location">Nafplio · Old Town</div>
+      <div class="resto-name">Byzantio</div>
+      <div class="resto-type">Traditional Peloponnese Kitchen</div>
+      <p class="resto-desc">Tucked into a neoclassical building in the old town, Byzantio serves slow-cooked regional dishes: stifado rabbit stew, stuffed aubergines, the local loukoumades honey fritters. Authentic and deeply satisfying.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICAL INFO -->
+<section id="practical">
+  <div class="section-header">
+    <span class="section-tag">Before You Go</span>
+    <h2 class="section-title">Practical Information</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="practical-grid">
+    <div class="practical-card">
+      <div class="practical-icon">🚗</div>
+      <div class="practical-title">Driving in Greece</div>
+      <ul class="practical-items">
+        <li>Hire from Athens airport, return same</li>
+        <li>Drive on the right, EU licence fine</li>
+        <li>Toll roads Athens → Meteora (~€15)</li>
+        <li>Free parking in Delphi &amp; Nafplio outskirts</li>
+        <li>March is pre-season, roads quiet</li>
+        <li>Full tank policy — return full</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">🏛</div>
+      <div class="practical-title">Site Entry</div>
+      <ul class="practical-items">
+        <li>Acropolis: €30, book in advance online</li>
+        <li>National Museum: €12</li>
+        <li>Meteora monasteries: €3 each, 6 open</li>
+        <li>Delphi site + museum: €12</li>
+        <li>Mycenae + Treasury of Atreus: €20</li>
+        <li>Epidaurus: €20</li>
+        <li>Temple of Poseidon: €10</li>
+        <li>Mystras: €12</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">👗</div>
+      <div class="practical-title">Dress Code</div>
+      <ul class="practical-items">
+        <li>Meteora monasteries: shoulders + knees covered</li>
+        <li>Sarongs available to borrow at gates</li>
+        <li>Sturdy shoes for all archaeological sites</li>
+        <li>March weather: 12–17°C, light layers</li>
+        <li>Rain possible — pack a waterproof</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">💳</div>
+      <div class="practical-title">Money &amp; Tips</div>
+      <ul class="practical-items">
+        <li>Euro (€) throughout Greece</li>
+        <li>Cards accepted most places</li>
+        <li>Keep €20–30 cash for small tavernas</li>
+        <li>Tipping: 10% is generous and appreciated</li>
+        <li>Petrol: ~€1.85/litre in March</li>
+        <li>Budget €25–35/day pp for food</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">⏰</div>
+      <div class="practical-title">Timing Tips</div>
+      <ul class="practical-items">
+        <li>Acropolis at 8am — beat the tour buses</li>
+        <li>Meteora at dawn for mist and solitude</li>
+        <li>Delphi site opens at 8am — go early</li>
+        <li>Sounion: arrive 1hr before sunset</li>
+        <li>March is shoulder season — fewer crowds</li>
+        <li>Some sites close Mon — check ahead</li>
+      </ul>
+    </div>
+    <div class="practical-card">
+      <div class="practical-icon">📱</div>
+      <div class="practical-title">Apps &amp; Resources</div>
+      <ul class="practical-items">
+        <li>Google Maps works well throughout</li>
+        <li>e-Ticketing: etickets.tap.gr (Athens)</li>
+        <li>Waze useful for mountain roads</li>
+        <li>iOverlander for wild parking spots</li>
+        <li>This audio guide — bookmark it!</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>ΕΛΛΆΔΑ 2025 &nbsp;·&nbsp; Amsterdam → Athens → Meteora → Delphi → Nafplio → Sounion → Home</p>
+</footer>
+
+<script>
+const SITES = [
+  {
+    id: 'acropolis',
+    name: 'Acropolis of Athens',
+    location: 'Athens, Day 2',
+    preview: 'The citadel of the ancient world, rising over the city that invented democracy...',
+    prompt: `You are an expert audio guide narrator for ancient Greek sites, speaking with warmth, gravitas and a gift for bringing history to life. Narrate a 3-minute audio guide for someone standing at the Acropolis of Athens. Cover: the 2,500-year history of the Parthenon, the genius of architect Ictinus and sculptor Pheidias, what the building originally looked like (painted in vivid colours), the golden statue of Athena that once stood inside, the story of the hill through Venetian bombardment, Turkish occupation and modern restoration. Make the visitor feel the weight of time and the extraordinary human achievement before them. Speak as if talking to a curious, intelligent friend. Around 400 words.`
+  },
+  {
+    id: 'anafiotika',
+    name: 'Anafiotika',
+    location: 'Athens, Day 2',
+    preview: 'A pocket of the Cyclades, improbably transplanted to a rock beneath the Acropolis...',
+    prompt: `You are an expert audio guide narrator. Narrate a short 2-minute audio guide for someone exploring Anafiotika — the tiny neighbourhood built into the northern slope of the Acropolis rock. Tell the story of how workers from the island of Anafi came to Athens in the 1830s to build the royal palace, and built their own mini-village in the Cycladic style when they stayed. Describe what they'd see: whitewashed houses, bougainvillea, stray cats, tiny blue doors. Mention the layers of Athens visible from up here — Byzantine churches below, neoclassical buildings, and the Acropolis above. Around 250 words.`
+  },
+  {
+    id: 'national-museum',
+    name: 'National Archaeological Museum',
+    location: 'Athens, Day 3',
+    preview: 'Five thousand years of human endeavour under one roof...',
+    prompt: `You are an expert audio guide narrator. Narrate a 3-minute audio guide for someone entering the National Archaeological Museum of Athens — one of the world's greatest museums. Highlight three unmissable objects: 1) The Mask of Agamemnon — discovered by Schliemann at Mycenae, the golden death mask that made him telegraph the King of Greece "I have gazed upon the face of Agamemnon". Explain its true age. 2) The Antikythera Mechanism — the world's first computer, a 2,000-year-old bronze device for calculating astronomical positions, discovered in a shipwreck in 1901. 3) The statue of Poseidon of Artemision — a 2-metre bronze Zeus or Poseidon caught mid-throw, muscles tensed, eyes fixed on a point that no longer exists. Give the visitor a sense of the sweep of Greek civilisation. Around 400 words.`
+  },
+  {
+    id: 'meteora',
+    name: 'Meteora Monasteries',
+    location: 'Meteora, Days 4–5',
+    preview: 'Monasteries balanced on impossible pillars of rock, between earth and sky...',
+    prompt: `You are an expert audio guide narrator. Narrate a 3-minute audio guide for someone standing among the rock formations of Meteora and looking up at the monasteries. Cover: the geological story of the pillars — 60 million years of sandstone deposited in an ancient sea, then thrust upward. Explain the first hermit monks who climbed up in the 9th century, living in caves and crevices. Describe how the 14th-century monasteries were built — monks hauling materials in nets, using ladders that could be pulled up for defence during Ottoman rule. Name the key monasteries: Great Meteoron (the largest), Varlaam (with its remarkable frescoes), Roussanou (perched on the narrowest pinnacle). Note that of the original 24 monasteries, only 6 remain active. Capture the spiritual and physical drama of this place. Around 400 words.`
+  },
+  {
+    id: 'delphi',
+    name: 'Delphi — Oracle of Apollo',
+    location: 'Delphi, Day 6',
+    preview: 'The Greeks called this place the navel of the world...',
+    prompt: `You are an expert audio guide narrator. Narrate a 3-minute audio guide for someone walking the Sacred Way at Delphi. Cover: why Delphi was considered the centre of the world — the myth of Zeus releasing two eagles from opposite ends of the earth and they met here. Explain the role of the Oracle — the Pythia, a woman who sat above a crack in the earth inhaling pneuma (possibly volcanic gases) and delivered prophecies to kings and city-states from across the known world. Give the famous examples: Croesus of Lydia's fatal misreading, the Athenian "wooden walls" prophecy before Salamis. Describe what the sanctuary looked like in its heyday — 3,000 bronze statues, treasuries from every Greek city-state competing in magnificence. Walk them up the Sacred Way past the Treasury of the Athenians to the Temple of Apollo, where the inscriptions read: KNOW THYSELF and NOTHING IN EXCESS. Around 400 words.`
+  },
+  {
+    id: 'mycenae',
+    name: 'Mycenae',
+    location: 'Argolid, Day 8',
+    preview: 'City of Agamemnon, of golden masks and the curse of the house of Atreus...',
+    prompt: `You are an expert audio guide narrator. Narrate a 3-minute audio guide for someone passing through the Lion Gate at Mycenae. Tell the story: Mycenae was the most powerful city in the Bronze Age Mediterranean, circa 1600–1100 BC. Its king Agamemnon led the Greek coalition to Troy. Heinrich Schliemann, the obsessive amateur archaeologist who believed Homer literally, came here in 1876 and excavated the Shaft Graves — finding golden death masks, bronze swords, amber from the Baltic, ivory from Egypt. He declared he had found Agamemnon's tomb. Describe what they're walking into: the Lion Gate (the oldest monumental sculpture in Europe), the massive Cyclopean walls (the ancient Greeks thought only giants could have moved such stones), the beehive tomb of the Treasury of Atreus. Bring in the mythology: the curse of the house of Atreus, Clytemnestra's murder of Agamemnon on his return from Troy, Orestes' revenge. Around 400 words.`
+  },
+  {
+    id: 'epidaurus',
+    name: 'Theatre of Epidaurus',
+    location: 'Argolid, Day 8',
+    preview: 'The most perfect acoustic theatre ever built — drop a coin on the stage and hear it from the top row...',
+    prompt: `You are an expert audio guide narrator. Narrate a 2-minute audio guide for someone sitting in the ancient theatre at Epidaurus. Describe the theatre's construction: built circa 340 BC by Polykleitos the Younger, it originally held 6,000 spectators (later expanded to 12,000-14,000). Explain the extraordinary acoustics — modern acoustic engineers have studied it for decades. The secret is partly the limestone seating that filters out low-frequency background noise while amplifying higher-frequency voices. Suggest they test it: drop a coin from the stage, tear a sheet of paper, clap once. Describe the theatrical tradition: this was a sanctuary of Asclepius, god of healing, and attending tragedies and comedies was considered therapeutic. The great plays of Sophocles, Euripides and Aeschylus were performed here. Imagine those ancient audiences — 12,000 people, in silence, watching Oedipus discover the truth. Around 300 words.`
+  },
+  {
+    id: 'sounion',
+    name: 'Temple of Poseidon at Sounion',
+    location: 'Cape Sounion, Day 10',
+    preview: 'Where Byron carved his name into marble, and the Aegean meets the edge of the world...',
+    prompt: `You are an expert audio guide narrator. Narrate a 2-minute audio guide for someone standing at the Temple of Poseidon at Cape Sounion as the sun goes down over the Aegean. The temple was built around 444 BC, the same period as the Parthenon — you can see the same Doric columns, the same proportions. From this point, ancient mariners knew they were home: after months at sea, Cape Sounion with its gleaming white temple was the last sight of Greece going out and the first sight coming home. Describe the Lord Byron connection: in 1810 he visited and carved his name into a column (it's still there — now considered vandalism, then considered romantic). Quote his lines from "The Isles of Greece" about Sounion. Describe the view: on a clear evening you can see across to the islands of Kea, Kythnos and Serifos. This is the fitting last chapter of the journey — standing where ancient sailors stood, looking at the same sea. Around 300 words.`
+  }
+];
+
+const audioElements = {};
+
+function renderAudioCards() {
+  const grid = document.getElementById('audioGrid');
+  SITES.forEach(site => {
+    const card = document.createElement('div');
+    card.className = 'audio-card';
+    card.id = `card-${site.id}`;
+    card.innerHTML = `
+      <div class="audio-site-name">${site.name}</div>
+      <div class="audio-location">${site.location}</div>
+      <div class="audio-preview" id="preview-${site.id}">${site.preview}</div>
+      <button class="generate-btn" id="gen-${site.id}" onclick="generateGuide('${site.id}')">
+        ✦ Generate Audio Guide
+      </button>
+      <div class="audio-text-display" id="text-${site.id}"></div>
+      <div class="audio-controls" id="controls-${site.id}" style="display:none">
+        <button class="play-btn" id="play-${site.id}" onclick="togglePlay('${site.id}')">▶</button>
+        <div class="audio-progress-wrap">
+          <span class="audio-status" id="status-${site.id}">Ready to play</span>
+          <div class="audio-bar">
+            <div class="audio-bar-fill" id="bar-${site.id}"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+async function generateGuide(siteId) {
+  const site = SITES.find(s => s.id === siteId);
+  const genBtn = document.getElementById(`gen-${siteId}`);
+  const textEl = document.getElementById(`text-${siteId}`);
+  const controlsEl = document.getElementById(`controls-${siteId}`);
+  const previewEl = document.getElementById(`preview-${siteId}`);
+
+  genBtn.disabled = true;
+  genBtn.innerHTML = '<span class="spinner"></span> Generating...';
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: site.prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content[0].text;
+
+    textEl.textContent = text;
+    textEl.style.display = 'block';
+    previewEl.style.display = 'none';
+
+    // Store text for TTS
+    site.generatedText = text;
+
+    genBtn.style.display = 'none';
+    controlsEl.style.display = 'flex';
+
+    // Try browser TTS
+    if ('speechSynthesis' in window) {
+      document.getElementById(`status-${siteId}`).textContent = 'Press ▶ to listen';
+    } else {
+      document.getElementById(`status-${siteId}`).textContent = 'Read the guide above';
+    }
+
+  } catch (err) {
+    genBtn.disabled = false;
+    genBtn.textContent = '⚠ Error — try again';
+    console.error(err);
+  }
+}
+
+function togglePlay(siteId) {
+  const site = SITES.find(s => s.id === siteId);
+  const btn = document.getElementById(`play-${siteId}`);
+  const statusEl = document.getElementById(`status-${siteId}`);
+  const barEl = document.getElementById(`bar-${siteId}`);
+
+  if (!site.generatedText) return;
+
+  // Stop any other playing
+  Object.keys(audioElements).forEach(id => {
+    if (id !== siteId && audioElements[id]) {
+      window.speechSynthesis.cancel();
+      document.getElementById(`play-${id}`).textContent = '▶';
+      document.getElementById(`play-${id}`).classList.remove('playing');
+      document.getElementById(`status-${id}`).textContent = 'Press ▶ to listen';
+      document.getElementById(`bar-${id}`).style.width = '0%';
+      audioElements[id] = null;
+    }
+  });
+
+  if (audioElements[siteId]) {
+    // Currently playing — pause/stop
+    window.speechSynthesis.cancel();
+    audioElements[siteId] = null;
+    btn.textContent = '▶';
+    btn.classList.remove('playing');
+    statusEl.textContent = 'Press ▶ to listen';
+    barEl.style.width = '0%';
+    if (audioElements[siteId + '_interval']) {
+      clearInterval(audioElements[siteId + '_interval']);
+    }
+    return;
+  }
+
+  // Start speech
+  const utterance = new SpeechSynthesisUtterance(site.generatedText);
+  utterance.rate = 0.9;
+  utterance.pitch = 1.0;
+
+  // Try to pick a nice voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.name.includes('Daniel') || v.name.includes('Karen') || v.name.includes('Moira') || v.name.includes('Samantha'));
+  if (preferred) utterance.voice = preferred;
+
+  let startTime = Date.now();
+  const estimatedDuration = site.generatedText.split(' ').length * 400; // ~150wpm
+
+  utterance.onstart = () => {
+    btn.textContent = '⏸';
+    btn.classList.add('playing');
+    statusEl.textContent = 'Now playing...';
+    audioElements[siteId] = utterance;
+
+    // Animate progress bar
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min((elapsed / estimatedDuration) * 100, 99);
+      barEl.style.width = pct + '%';
+    }, 200);
+    audioElements[siteId + '_interval'] = interval;
+  };
+
+  utterance.onend = () => {
+    btn.textContent = '▶';
+    btn.classList.remove('playing');
+    statusEl.textContent = 'Finished';
+    barEl.style.width = '100%';
+    audioElements[siteId] = null;
+    clearInterval(audioElements[siteId + '_interval']);
+    setTimeout(() => { barEl.style.width = '0%'; statusEl.textContent = 'Press ▶ to replay'; }, 1500);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+renderAudioCards();
+// Pre-load voices
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+}
+</script>
+</body>
+</html>
